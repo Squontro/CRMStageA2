@@ -5,7 +5,6 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Event\Event;
 
 /**
  * Opportunities Model
@@ -13,16 +12,16 @@ use Cake\Event\Event;
  * @property \App\Model\Table\OpportunityStatusesTable|\Cake\ORM\Association\BelongsTo $OpportunityStatuses
  * @property \App\Model\Table\OpportunityTypesTable|\Cake\ORM\Association\BelongsTo $OpportunityTypes
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\ContactOpportunitiesTable|\Cake\ORM\Association\HasMany $ContactOpportunities
- * @property \App\Model\Table\OpportunityProductsTable|\Cake\ORM\Association\HasMany $OpportunityProducts
- * @property \App\Model\Table\OpportunityStatusesReasonsTable|\Cake\ORM\Association\HasMany $OpportunityStatusesReasons
  * @property \App\Model\Table\RaisesTable|\Cake\ORM\Association\HasMany $Raises
+ * @property |\Cake\ORM\Association\BelongsToMany $Contacts
+ * @property |\Cake\ORM\Association\BelongsToMany $OpportunityReasons
+ * @property |\Cake\ORM\Association\BelongsToMany $Products
  *
  * @method \App\Model\Entity\Opportunity get($primaryKey, $options = [])
  * @method \App\Model\Entity\Opportunity newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Opportunity[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Opportunity|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Opportunity saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Opportunity|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Opportunity patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Opportunity[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Opportunity findOrCreate($search, callable $callback = null, $options = [])
@@ -31,6 +30,7 @@ use Cake\Event\Event;
  */
 class OpportunitiesTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -59,17 +59,23 @@ class OpportunitiesTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('ContactOpportunities', [
-            'foreignKey' => 'opportunity_id'
-        ]);
-        $this->hasMany('OpportunityProducts', [
-            'foreignKey' => 'opportunity_id'
-        ]);
-        $this->hasMany('OpportunityStatusesReasons', [
-            'foreignKey' => 'opportunity_id'
-        ]);
         $this->hasMany('Raises', [
             'foreignKey' => 'opportunity_id'
+        ]);
+        $this->belongsToMany('Contacts', [
+            'foreignKey' => 'opportunity_id',
+            'targetForeignKey' => 'contact_id',
+            'joinTable' => 'contacts_opportunities'
+        ]);
+        $this->belongsToMany('OpportunityReasons', [
+            'foreignKey' => 'opportunity_id',
+            'targetForeignKey' => 'opportunity_reason_id',
+            'joinTable' => 'opportunities_opportunity_reasons'
+        ]);
+        $this->belongsToMany('Products', [
+            'foreignKey' => 'opportunity_id',
+            'targetForeignKey' => 'product_id',
+            'joinTable' => 'opportunities_products'
         ]);
     }
 
@@ -105,6 +111,7 @@ class OpportunitiesTable extends Table
             ->allowEmptyString('budget');
 
         $validator
+            ->requirePresence('estimate_submitted', 'create')
             ->allowEmptyString('estimate_submitted', false);
 
         return $validator;
@@ -125,11 +132,4 @@ class OpportunitiesTable extends Table
 
         return $rules;
     }
-
-    public function beforeSave($event, $entity, $options){
-        if (empty($entity->opportunity_status_id)){
-            $entity->opportunity_status_id = 1;
-        }
-    }
-
 }

@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class OpportunityReasonsController extends AppController
 {
+
     /**
      * Index method
      *

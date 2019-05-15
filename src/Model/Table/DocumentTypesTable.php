@@ -9,8 +9,6 @@ use Cake\Validation\Validator;
 /**
  * DocumentTypes Model
  *
- * @property \App\Model\Table\EmpDocumentsTable|\Cake\ORM\Association\HasMany $EmpDocuments
- *
  * @method \App\Model\Entity\DocumentType get($primaryKey, $options = [])
  * @method \App\Model\Entity\DocumentType newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\DocumentType[] newEntities(array $data, array $options = [])
@@ -19,6 +17,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\DocumentType patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\DocumentType[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\DocumentType findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class DocumentTypesTable extends Table
 {
@@ -37,14 +37,7 @@ class DocumentTypesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('EmpDocuments', [
-            'foreignKey' => 'document_type_id'
-        ]);
-         $this->belongsToMany('Employees', [
-            'foreignKey' => 'document_type_id',
-            'targetForeignKey' => 'employee_id',
-            'joinTable' => 'emp_documents'
-        ]);
+        $this->addBehavior('Timestamp');
     }
 
     /**
@@ -56,14 +49,30 @@ class DocumentTypesTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->nonNegativeInteger('id')
+            ->integer('id')
             ->allowEmptyString('id', 'create');
 
         $validator
             ->scalar('name')
-            ->maxLength('name', 250)
-            ->allowEmptyString('name');
+            ->maxLength('name', 45)
+            ->requirePresence('name', 'create')
+            ->allowEmptyString('name', false)
+            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['name']));
+
+        return $rules;
     }
 }

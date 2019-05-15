@@ -25,6 +25,7 @@ use Cake\ORM\Entity;
  */
 class Organization extends Entity
 {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

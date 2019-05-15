@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class OpportunitiesController extends AppController
 {
+
     /**
      * Index method
      *
@@ -37,7 +38,7 @@ class OpportunitiesController extends AppController
     public function view($id = null)
     {
         $opportunity = $this->Opportunities->get($id, [
-            'contain' => ['OpportunityStatuses', 'OpportunityTypes', 'Users', 'ContactOpportunities', 'OpportunityProducts', 'OpportunityStatusesReasons', 'Raises']
+            'contain' => ['OpportunityStatuses', 'OpportunityTypes', 'Users', 'Contacts', 'OpportunityReasons', 'Products', 'Raises']
         ]);
 
         $this->set('opportunity', $opportunity);
@@ -63,7 +64,10 @@ class OpportunitiesController extends AppController
         $opportunityStatuses = $this->Opportunities->OpportunityStatuses->find('list', ['limit' => 200]);
         $opportunityTypes = $this->Opportunities->OpportunityTypes->find('list', ['limit' => 200]);
         $users = $this->Opportunities->Users->find('list', ['limit' => 200]);
-        $this->set(compact('opportunity', 'opportunityStatuses', 'opportunityTypes', 'users'));
+        $contacts = $this->Opportunities->Contacts->find('list', ['limit' => 200]);
+        $opportunityReasons = $this->Opportunities->OpportunityReasons->find('list', ['limit' => 200]);
+        $products = $this->Opportunities->Products->find('list', ['limit' => 200]);
+        $this->set(compact('opportunity', 'opportunityStatuses', 'opportunityTypes', 'users', 'contacts', 'opportunityReasons', 'products'));
     }
 
     /**
@@ -76,7 +80,7 @@ class OpportunitiesController extends AppController
     public function edit($id = null)
     {
         $opportunity = $this->Opportunities->get($id, [
-            'contain' => []
+            'contain' => ['Contacts', 'OpportunityReasons', 'Products']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $opportunity = $this->Opportunities->patchEntity($opportunity, $this->request->getData());
@@ -90,7 +94,10 @@ class OpportunitiesController extends AppController
         $opportunityStatuses = $this->Opportunities->OpportunityStatuses->find('list', ['limit' => 200]);
         $opportunityTypes = $this->Opportunities->OpportunityTypes->find('list', ['limit' => 200]);
         $users = $this->Opportunities->Users->find('list', ['limit' => 200]);
-        $this->set(compact('opportunity', 'opportunityStatuses', 'opportunityTypes', 'users'));
+        $contacts = $this->Opportunities->Contacts->find('list', ['limit' => 200]);
+        $opportunityReasons = $this->Opportunities->OpportunityReasons->find('list', ['limit' => 200]);
+        $products = $this->Opportunities->Products->find('list', ['limit' => 200]);
+        $this->set(compact('opportunity', 'opportunityStatuses', 'opportunityTypes', 'users', 'contacts', 'opportunityReasons', 'products'));
     }
 
     /**

@@ -17,7 +17,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Raise newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Raise[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Raise|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Raise saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Raise|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Raise patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Raise[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Raise findOrCreate($search, callable $callback = null, $options = [])
@@ -26,6 +26,7 @@ use Cake\Validation\Validator;
  */
 class RaisesTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -69,6 +70,12 @@ class RaisesTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
+            ->scalar('name')
+            ->maxLength('name', 45)
+            ->requirePresence('name', 'create')
+            ->allowEmptyString('name', false);
+
+        $validator
             ->dateTime('date_notification')
             ->requirePresence('date_notification', 'create')
             ->allowEmptyDateTime('date_notification', false);
@@ -91,11 +98,4 @@ class RaisesTable extends Table
 
         return $rules;
     }
-
-    public function beforeSave($event, $entity, $options){
-        if (empty($entity->raise_status_id)){
-            $entity->raise_status_id = 1;
-        }
-    }
-
 }

@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Parameter newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Parameter[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Parameter|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Parameter saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Parameter|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Parameter patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Parameter[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Parameter findOrCreate($search, callable $callback = null, $options = [])
@@ -25,6 +25,7 @@ use Cake\Validation\Validator;
  */
 class ParametersTable extends Table
 {
+
     /**
      * Initialize method
      *

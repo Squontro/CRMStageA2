@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  */
 class UserInterface extends Entity
 {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

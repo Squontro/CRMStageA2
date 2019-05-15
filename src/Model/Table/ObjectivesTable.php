@@ -13,7 +13,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Objective newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Objective[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Objective|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Objective saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Objective|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Objective patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Objective[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Objective findOrCreate($search, callable $callback = null, $options = [])
@@ -22,6 +22,7 @@ use Cake\Validation\Validator;
  */
 class ObjectivesTable extends Table
 {
+
     /**
      * Initialize method
      *

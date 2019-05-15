@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class EmployeeCategoriesController extends AppController
 {
+
     /**
      * Index method
      *

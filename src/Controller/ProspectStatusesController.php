@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class ProspectStatusesController extends AppController
 {
+
     /**
      * Index method
      *

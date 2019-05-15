@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\RaiseStatus newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\RaiseStatus[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\RaiseStatus|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\RaiseStatus saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\RaiseStatus|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\RaiseStatus patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\RaiseStatus[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\RaiseStatus findOrCreate($search, callable $callback = null, $options = [])
@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class RaiseStatusesTable extends Table
 {
+
     /**
      * Initialize method
      *

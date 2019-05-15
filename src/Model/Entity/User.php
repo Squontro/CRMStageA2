@@ -7,7 +7,7 @@ use Cake\ORM\Entity;
  * User Entity
  *
  * @property int $id
- * @property string $name
+ * @property string $last_name
  * @property string $first_name
  * @property string $username
  * @property string $password
@@ -26,6 +26,7 @@ use Cake\ORM\Entity;
  */
 class User extends Entity
 {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

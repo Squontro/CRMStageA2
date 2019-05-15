@@ -9,8 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Departments Model
  *
- * @property \App\Model\Table\CompagnesTable|\Cake\ORM\Association\BelongsTo $Compagnes
- * @property \App\Model\Table\ServicesTable|\Cake\ORM\Association\HasMany $Services
+ * @property |\Cake\ORM\Association\HasMany $Employees
  *
  * @method \App\Model\Entity\Department get($primaryKey, $options = [])
  * @method \App\Model\Entity\Department newEntity($data = null, array $options = [])
@@ -20,6 +19,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Department patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Department[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Department findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class DepartmentsTable extends Table
 {
@@ -38,11 +39,9 @@ class DepartmentsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Compagnes', [
-            'foreignKey' => 'compagne_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->hasMany('Services', [
+        $this->addBehavior('Timestamp');
+
+        $this->hasMany('Employees', [
             'foreignKey' => 'department_id'
         ]);
     }
@@ -56,13 +55,15 @@ class DepartmentsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->nonNegativeInteger('id')
+            ->integer('id')
             ->allowEmptyString('id', 'create');
 
         $validator
             ->scalar('name')
-            ->maxLength('name', 125)
-            ->allowEmptyString('name');
+            ->maxLength('name', 45)
+            ->requirePresence('name', 'create')
+            ->allowEmptyString('name', false)
+            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         return $validator;
     }
@@ -76,7 +77,7 @@ class DepartmentsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['compagne_id'], 'Compagnes'));
+        $rules->add($rules->isUnique(['name']));
 
         return $rules;
     }

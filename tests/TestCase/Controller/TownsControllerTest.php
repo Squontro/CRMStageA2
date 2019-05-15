@@ -19,8 +19,10 @@ class TownsControllerTest extends TestCase
      */
     public $fixtures = [
         'app.Towns',
-        'app.Dairas',
-        'app.Employees'
+        'app.Wilayas',
+        'app.Contacts',
+        'app.Organizations',
+        'app.OrganizationsTowns'
     ];
 
     /**

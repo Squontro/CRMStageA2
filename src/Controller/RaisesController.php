@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class RaisesController extends AppController
 {
+
     /**
      * Index method
      *

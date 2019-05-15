@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class PermissionsController extends AppController
 {
+
     /**
      * Index method
      *

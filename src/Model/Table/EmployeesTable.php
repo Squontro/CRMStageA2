@@ -9,19 +9,14 @@ use Cake\Validation\Validator;
 /**
  * Employees Model
  *
- * @property \App\Model\Table\TownsTable|\Cake\ORM\Association\BelongsTo $Towns
+ * @property |\Cake\ORM\Association\BelongsTo $Departments
  * @property \App\Model\Table\ServicesTable|\Cake\ORM\Association\BelongsTo $Services
- * @property \App\Model\Table\SchoolLevelsTable|\Cake\ORM\Association\BelongsTo $SchoolLevels
- * @property \App\Model\Table\AbsEmployeesTable|\Cake\ORM\Association\HasMany $AbsEmployees
- * @property \App\Model\Table\ConsultationsTable|\Cake\ORM\Association\HasMany $Consultations
- * @property \App\Model\Table\EmpDeplomesTable|\Cake\ORM\Association\HasMany $EmpDeplomes
- * @property \App\Model\Table\EmpDocumentsTable|\Cake\ORM\Association\HasMany $EmpDocuments
- * @property \App\Model\Table\EmployeLanguagesTable|\Cake\ORM\Association\HasMany $EmployeLanguages
- * @property \App\Model\Table\ExperiencesTable|\Cake\ORM\Association\HasMany $Experiences
- * @property \App\Model\Table\HistJobsTable|\Cake\ORM\Association\HasMany $HistJobs
- * @property \App\Model\Table\JointsTable|\Cake\ORM\Association\HasMany $Joints
- * @property \App\Model\Table\LeavesTable|\Cake\ORM\Association\HasMany $Leaves
- * @property \App\Model\Table\QualificationsTable|\Cake\ORM\Association\HasMany $Qualifications
+ * @property |\Cake\ORM\Association\BelongsTo $EmployeeCategories
+ * @property |\Cake\ORM\Association\BelongsTo $Roles
+ * @property |\Cake\ORM\Association\BelongsTo $BloodGroups
+ * @property |\Cake\ORM\Association\HasMany $Users
+ * @property |\Cake\ORM\Association\BelongsToMany $Documents
+ * @property |\Cake\ORM\Association\BelongsToMany $Skills
  *
  * @method \App\Model\Entity\Employee get($primaryKey, $options = [])
  * @method \App\Model\Entity\Employee newEntity($data = null, array $options = [])
@@ -53,67 +48,38 @@ class EmployeesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Towns', [
-            'foreignKey' => 'town_id',
+        $this->belongsTo('Departments', [
+            'foreignKey' => 'department_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Services', [
-            'foreignKey' => 'service_id',
+            'foreignKey' => 'services_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Jobs', [
-            'foreignKey' => 'job_id',
+        $this->belongsTo('EmployeeCategories', [
+            'foreignKey' => 'employee_category_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('SchoolLevels', [
-            'foreignKey' => 'school_level_id'
+        $this->belongsTo('Roles', [
+            'foreignKey' => 'role_id',
+            'joinType' => 'INNER'
         ]);
-        $this->hasMany('AbsEmployees', [
+        $this->belongsTo('BloodGroups', [
+            'foreignKey' => 'blood_group_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->hasMany('Users', [
             'foreignKey' => 'employee_id'
         ]);
-        $this->hasMany('Consultations', [
-            'foreignKey' => 'employee_id'
-        ]);
-
-       $this->belongsToMany('Deplomes', [
+        $this->belongsToMany('Documents', [
             'foreignKey' => 'employee_id',
-            'targetForeignKey' => 'deplome_id',
-            'joinTable' => 'employees_deplomes'
+            'targetForeignKey' => 'document_id',
+            'joinTable' => 'documents_employees'
         ]);
-        
-        $this->belongsToMany('DocumentTypes', [
+        $this->belongsToMany('Skills', [
             'foreignKey' => 'employee_id',
-            'targetForeignKey' => 'document_type_id',
-            'joinTable' => 'employees_documents'
-        ]);
-
-       $this->hasMany('EmployeesDeplomes', [
-            'foreignKey' => 'employee_id',
-        ]);
-
-        $this->hasMany('EmployeesDocuments', [
-            'foreignKey' => 'employee_id'
-        ]);
-        $this->hasMany('EmployeLanguages', [
-            'foreignKey' => 'employee_id'
-        ]);
-        $this->hasMany('Experiences', [
-            'foreignKey' => 'employee_id'
-        ]);
-        $this->hasMany('HistJobs', [
-            'foreignKey' => 'employee_id'
-        ]);
-        $this->hasMany('Joints', [
-            'foreignKey' => 'employee_id'
-        ]);
-        $this->hasMany('Childs', [
-            'foreignKey' => 'employee_id'
-        ]);
-        $this->hasMany('Leaves', [
-            'foreignKey' => 'employee_id'
-        ]);
-        $this->hasMany('Qualifications', [
-            'foreignKey' => 'employee_id'
+            'targetForeignKey' => 'skill_id',
+            'joinTable' => 'employees_skills'
         ]);
     }
 
@@ -126,99 +92,93 @@ class EmployeesTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->nonNegativeInteger('id')
+            ->integer('id')
             ->allowEmptyString('id', 'create');
+
         $validator
             ->scalar('matricule')
-            ->maxLength('matricule', 50)
-            ->allowEmptyString('matricule');
+            ->maxLength('matricule', 100)
+            ->requirePresence('matricule', 'create')
+            ->allowEmptyString('matricule', false)
+            ->add('matricule', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->scalar('name')
+            ->maxLength('name', 100)
+            ->requirePresence('name', 'create')
+            ->allowEmptyString('name', false);
 
         $validator
             ->scalar('first_name')
-            ->maxLength('first_name', 250)
+            ->maxLength('first_name', 100)
             ->requirePresence('first_name', 'create')
             ->allowEmptyString('first_name', false);
 
         $validator
-            ->scalar('laste_name')
-            ->maxLength('laste_name', 250)
-            ->requirePresence('laste_name', 'create')
-            ->allowEmptyString('laste_name', false);
+            ->email('email')
+            ->requirePresence('email', 'create')
+            ->allowEmptyString('email', false)
+            ->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->scalar('phone_number')
+            ->maxLength('phone_number', 25)
+            ->requirePresence('phone_number', 'create')
+            ->allowEmptyString('phone_number', false);
+
+        $validator
+            ->date('date_entered')
+            ->requirePresence('date_entered', 'create')
+            ->allowEmptyDate('date_entered', false);
 
         $validator
             ->date('date_birth')
-            ->allowEmptyDate('date_birth');
+            ->requirePresence('date_birth', 'create')
+            ->allowEmptyDate('date_birth', false);
 
         $validator
-            ->scalar('presume')
-            ->maxLength('presume', 50)
-            ->allowEmptyString('presume');
+            ->date('date_out')
+            ->allowEmptyDate('date_out');
+
+        $validator
+            ->scalar('postal_address')
+            ->maxLength('postal_address', 150)
+            ->allowEmptyString('postal_address');
 
         $validator
             ->scalar('last_name_father')
-            ->maxLength('last_name_father', 250)
+            ->maxLength('last_name_father', 150)
             ->allowEmptyString('last_name_father');
 
         $validator
-            ->scalar('first_name_mother')
-            ->maxLength('first_name_mother', 250)
-            ->allowEmptyString('first_name_mother');
+            ->scalar('first_name_father')
+            ->maxLength('first_name_father', 150)
+            ->allowEmptyString('first_name_father');
 
         $validator
             ->scalar('last_name_mother')
-            ->maxLength('last_name_mother', 250)
-            ->allowEmptyString('last_name_mother'); 
+            ->maxLength('last_name_mother', 150)
+            ->allowEmptyString('last_name_mother');
 
         $validator
-            ->scalar('adresse')
-            ->maxLength('adresse', 250)
-            ->allowEmptyString('adresse');
-
-        $validator
-            ->email('email')
-            ->allowEmptyString('email');
-
-        $validator
-            ->scalar('phone_numbre')
-            ->maxLength('phone_numbre', 50)
-            ->allowEmptyString('phone_numbre');
-
-        $validator
-            ->scalar('postal_code')
-            ->maxLength('postal_code', 50)
-            ->allowEmptyString('postal_code');
-
-        $validator
-            ->integer('nbr_child')
-            ->allowEmptyString('nbr_child');
-
-        $validator
-            ->scalar('nationality')
-            ->maxLength('nationality', 100)
-            ->allowEmptyString('nationality');
-
-        $validator
-            ->scalar('nationality_service')
-            ->maxLength('nationality_service', 50)
-            ->allowEmptyString('nationality_service');
-
-        $validator
-            ->scalar('blood_group')
-            ->maxLength('blood_group', 150)
-            ->allowEmptyString('blood_group');
+            ->scalar('first_name_mother')
+            ->maxLength('first_name_mother', 150)
+            ->allowEmptyString('first_name_mother');
 
         $validator
             ->scalar('ccp_number')
-            ->maxLength('ccp_number', 150)
+            ->maxLength('ccp_number', 45)
             ->allowEmptyString('ccp_number');
 
         $validator
             ->scalar('ss_number')
-            ->maxLength('ss_number', 150)
+            ->maxLength('ss_number', 45)
             ->allowEmptyString('ss_number');
+
         $validator
-            ->scalar('obs')
-            ->allowEmptyString('obs');
+            ->scalar('photo')
+            ->maxLength('photo', 250)
+            ->allowEmptyString('photo');
 
         return $validator;
     }
@@ -232,11 +192,13 @@ class EmployeesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-       // $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->existsIn(['town_id'], 'Towns'));
-        $rules->add($rules->existsIn(['service_id'], 'Services'));
-        $rules->add($rules->existsIn(['job_id'], 'Jobs'));
-        $rules->add($rules->existsIn(['school_level_id'], 'SchoolLevels'));
+        $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->isUnique(['matricule']));
+        $rules->add($rules->existsIn(['department_id'], 'Departments'));
+        $rules->add($rules->existsIn(['services_id'], 'Services'));
+        $rules->add($rules->existsIn(['employee_category_id'], 'EmployeeCategories'));
+        $rules->add($rules->existsIn(['role_id'], 'Roles'));
+        $rules->add($rules->existsIn(['blood_group_id'], 'BloodGroups'));
 
         return $rules;
     }

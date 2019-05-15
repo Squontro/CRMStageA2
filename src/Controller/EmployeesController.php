@@ -2,9 +2,6 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Dompdf\Adapter\CPDF;      
-use Dompdf\Dompdf;
-use Dompdf\Exception;
 
 /**
  * Employees Controller
@@ -14,14 +11,7 @@ use Dompdf\Exception;
  * @method \App\Model\Entity\Employee[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class EmployeesController extends AppController
-{ 
-    public $helpers = array('Html', 'Form');
-   //public $components = array('RequestHandler');
-   public function initialize() {
-    parent::initialize();
-
-    $this->loadComponent('RequestHandler');
-  }
+{
 
     /**
      * Index method
@@ -31,12 +21,29 @@ class EmployeesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Towns', 'Services', 'SchoolLevels', 'Jobs']
+            'contain' => ['Departments', 'Services', 'EmployeeCategories', 'Roles', 'BloodGroups']
         ];
         $employees = $this->paginate($this->Employees);
 
         $this->set(compact('employees'));
     }
+
+
+    /**
+     * Index method Json for JsGrid
+     * @return \Cake\Http\Response
+     */
+    public function  indexJson() {
+        $this->autoRender = false; // avoid to render view
+        $content = $this->Employees->find('all' ,  array('fields' => array('Countries.id' ,'Countries.name')));
+        $this->RequestHandler->respondAs('json');
+        $this->autoRender = false;
+        $content = json_encode($content);
+        $this->response->body($content);
+        $this->response->type('json');
+        return $this->response;
+    }
+
     /**
      * View method
      *
@@ -47,11 +54,12 @@ class EmployeesController extends AppController
     public function view($id = null)
     {
         $employee = $this->Employees->get($id, [
-            'contain' => ['Towns', 'Services', 'SchoolLevels', 'Jobs' ,'AbsEmployees', 'Consultations', 'EmpDocuments', 'EmployeLanguages', 'Experiences', 'HistJobs', 'Joints','Childs', 'Leaves', 'Qualifications']
+            'contain' => ['Departments', 'Services', 'EmployeeCategories', 'Roles', 'BloodGroups', 'Documents', 'Skills', 'Users']
         ]);
 
         $this->set('employee', $employee);
     }
+
     /**
      * Add method
      *
@@ -61,52 +69,24 @@ class EmployeesController extends AppController
     {
         $employee = $this->Employees->newEntity();
         if ($this->request->is('post')) {
-
-        if(!empty($this->request->data['photo']['name']))
-        {
-            $fileName=$this->request->data['photo']['name'] ;
-            $uploadPath='img/Employees';
-            $uploadFile=$uploadPath.$fileName ;
-            if(move_uploaded_file($this->request->data['photo']['tmp_name'], $uploadFile))
-            {
-                $this->request->data['photo']=$fileName ;
-            }
-            }
-            $empData = $this->request->getData() ;
-           //unset($empData["matricule"]) ;
-
-           // var_dump($empData["employees_documents"]);
-          //  die();
-
-       
-        if(!empty($this->request->data['employees_documents']['image']['name']))
-        {
-            $fileNamedoc=$this->request->data['image']['name'] ;
-            $uploadPathdoc='img/Employees';
-            $uploadFiledoc=$uploadPathdoc.$fileNamedoc ;
-            if(move_uploaded_file($this->request->data['image']['tmp_name'], $uploadFiledoc))
-            {
-                $this->request->data['image']=$fileNamedoc ;
-            }
-        }
-            //var_dump($this->request->getData());
-            //die();
-            $employee = $this->Employees->patchEntity($employee, $this->request->getData(),['associated' => ['Experiences', 'Joints','Childs','EmployeesDeplomes','Qualifications', 'EmployeesDocuments']]);           
+            $employee = $this->Employees->patchEntity($employee, $this->request->getData());
             if ($this->Employees->save($employee)) {
                 $this->Flash->success(__('The employee has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The employee could not be saved. Please, try again.'));
         }
-        $towns = $this->Employees->Towns->find('list');
-        $services = $this->Employees->Services->find('list');
-        $schoolLevels = $this->Employees->SchoolLevels->find('list');
-        $jobs = $this->Employees->Jobs->find('list');
-        $deplomes = $this->Employees->Deplomes->find('list', ['keyField'=>'id' , 'ValueField'=>'name']);
-        $documentTypes = $this->Employees->DocumentTypes->find('list', ['keyField'=>'id' , 'ValueField'=>'name']);
-        $this->set(compact('employee', 'towns', 'services', 'schoolLevels', 'jobs','deplomes','documentTypes'));
-        $this->set('_serialize',['employee']);
+        $departments = $this->Employees->Departments->find('list', ['limit' => 200]);
+        $services = $this->Employees->Services->find('list', ['limit' => 200]);
+        $employeeCategories = $this->Employees->EmployeeCategories->find('list', ['limit' => 200]);
+        $roles = $this->Employees->Roles->find('list', ['limit' => 200]);
+        $bloodGroups = $this->Employees->BloodGroups->find('list', ['limit' => 200]);
+        $documents = $this->Employees->Documents->find('list', ['limit' => 200]);
+        $skills = $this->Employees->Skills->find('list', ['limit' => 200]);
+        $this->set(compact('employee', 'departments', 'services', 'employeeCategories', 'roles', 'bloodGroups', 'documents', 'skills'));
     }
+
     /**
      * Edit method
      *
@@ -117,33 +97,27 @@ class EmployeesController extends AppController
     public function edit($id = null)
     {
         $employee = $this->Employees->get($id, [
-            'contain' => []
+            'contain' => ['Documents', 'Skills']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-           if(!empty($this->request->data['photo']['name']))
-            {
-            $fileName=$this->request->data['photo']['name'] ;
-            $uploadPath='img/Employees';
-            $uploadFile=$uploadPath.$fileName ;
-            if(move_uploaded_file($this->request->data['photo']['tmp_name'], $uploadFile))
-            {
-                $this->request->data['photo']=$fileName ;
-            }
-            }
             $employee = $this->Employees->patchEntity($employee, $this->request->getData());
             if ($this->Employees->save($employee)) {
                 $this->Flash->success(__('The employee has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The employee could not be saved. Please, try again.'));
         }
-        $towns = $this->Employees->Towns->find('list');
-        $services = $this->Employees->Services->find('list');
-        $schoolLevels = $this->Employees->SchoolLevels->find('list');
-        $jobs = $this->Employees->Jobs->find('list');
-        $this->set(compact('employee', 'towns', 'services', 'schoolLevels','jobs'));
-          $this->set('_serialize',['employee']);
-           }
+        $departments = $this->Employees->Departments->find('list', ['limit' => 200]);
+        $services = $this->Employees->Services->find('list', ['limit' => 200]);
+        $employeeCategories = $this->Employees->EmployeeCategories->find('list', ['limit' => 200]);
+        $roles = $this->Employees->Roles->find('list', ['limit' => 200]);
+        $bloodGroups = $this->Employees->BloodGroups->find('list', ['limit' => 200]);
+        $documents = $this->Employees->Documents->find('list', ['limit' => 200]);
+        $skills = $this->Employees->Skills->find('list', ['limit' => 200]);
+        $this->set(compact('employee', 'departments', 'services', 'employeeCategories', 'roles', 'bloodGroups', 'documents', 'skills'));
+    }
+
     /**
      * Delete method
      *
@@ -160,69 +134,7 @@ class EmployeesController extends AppController
         } else {
             $this->Flash->error(__('The employee could not be deleted. Please, try again.'));
         }
+
         return $this->redirect(['action' => 'index']);
-        }
-     public function  indexJson() {
-            $this->autoRender = false; // avoid to render view
-            $employees = $this->Employees->find('all' , 
-            array('fields' => array('Employees.id', 'Employees.matricule' ,'Employees.first_name','Employees.laste_name','Employees.sex' ,'Employees.phone_numbre','Employees.email' ,'Employees.service_id' ,'Employees.job_id')));
-            $this->RequestHandler->respondAs('json');
-            $this->autoRender = false; 
-            $content = json_encode($employees);
-            $this->response->body($content);
-            $this->response->type('json');
-            return $this->response;
     }
-
- public function export() {
-         $this->setResponse($this->getResponse()->withDownload('ExprtEmp.csv'));
-       // $this->response->download('export.csv');
-        $data = $this->Employees->find('all');
-        $_serialize = 'data';
-        $this->viewBuilder()->className('CsvView.Csv');
-        $this->set(compact('data', '_serialize'));           
-}
-
-public function import() {
-      //$data = $this->request->data['csv'];
-      $file = fopen("C:\Users\anis\Desktop\ExprtEmp.csv","r");
-      //var_dump($file);
-        //die() ;
-      //$file = $data['tmp_name'];
-      $handle = fopen($file, "r");
-      while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
-        if($row[0] == 'id') {
-            continue;
-        }
-        $employees = $this->Employees->get($row[0]);
-        $columns = [
-            'matricule' => $row[1],
-            'first_name' => $row[2],
-            'laste_name' => $row[3]
-        ];
-        $Employee = $this->Employees->patchEntity($employees, $columns);
-        $this->Employees->save($Employee);
-    }
-
-    fclose($handle);
-    $this->set('title','Upload Student CSV File Input Number and others');
-    return $this->redirect($this->referer());
-}
-
-
-   public function viewpdf($filename) {
-        $this->viewBuilder()
-            ->className('Dompdf.Pdf')
-            ->layout('Dompdf.default')
-            ->options(['config' => [
-                'filename' => $filename,
-                'render' => 'browser',
-            ]]);
-    }
-    
-    
-
-
-   
-
 }

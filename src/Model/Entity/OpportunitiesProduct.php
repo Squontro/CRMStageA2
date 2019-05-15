@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  */
 class OpportunitiesProduct extends Entity
 {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

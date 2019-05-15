@@ -12,13 +12,13 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\SourcesTable|\Cake\ORM\Association\BelongsTo $Sources
  * @property \App\Model\Table\ProspectStatusesTable|\Cake\ORM\Association\BelongsTo $ProspectStatuses
- * @property \App\Model\Table\ProspectStatusesReasonsTable|\Cake\ORM\Association\HasMany $ProspectStatusesReasons
+ * @property |\Cake\ORM\Association\BelongsToMany $ProspectReasons
  *
  * @method \App\Model\Entity\Prospect get($primaryKey, $options = [])
  * @method \App\Model\Entity\Prospect newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Prospect[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Prospect|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Prospect saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Prospect|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Prospect patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Prospect[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Prospect findOrCreate($search, callable $callback = null, $options = [])
@@ -27,6 +27,7 @@ use Cake\Validation\Validator;
  */
 class ProspectsTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -52,11 +53,13 @@ class ProspectsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('ProspectStatuses', [
-            'foreignKey' => 'prospect_status_id',
+            'foreignKey' => 'propsect_status_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('ProspectStatusesReasons', [
-            'foreignKey' => 'prospect_id'
+        $this->belongsToMany('ProspectReasons', [
+            'foreignKey' => 'prospect_id',
+            'targetForeignKey' => 'prospect_reason_id',
+            'joinTable' => 'prospect_reasons_prospects'
         ]);
     }
 
@@ -107,7 +110,7 @@ class ProspectsTable extends Table
         $rules->add($rules->isUnique(['email']));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['source_id'], 'Sources'));
-        $rules->add($rules->existsIn(['prospect_status_id'], 'ProspectStatuses'));
+        $rules->add($rules->existsIn(['propsect_status_id'], 'ProspectStatuses'));
 
         return $rules;
     }

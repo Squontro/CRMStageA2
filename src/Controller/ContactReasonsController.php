@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class ContactReasonsController extends AppController
 {
+
     /**
      * Index method
      *
@@ -34,7 +35,7 @@ class ContactReasonsController extends AppController
     public function view($id = null)
     {
         $contactReason = $this->ContactReasons->get($id, [
-            'contain' => []
+            'contain' => ['Contacts']
         ]);
 
         $this->set('contactReason', $contactReason);
@@ -57,7 +58,8 @@ class ContactReasonsController extends AppController
             }
             $this->Flash->error(__('The contact reason could not be saved. Please, try again.'));
         }
-        $this->set(compact('contactReason'));
+        $contacts = $this->ContactReasons->Contacts->find('list', ['limit' => 200]);
+        $this->set(compact('contactReason', 'contacts'));
     }
 
     /**
@@ -70,7 +72,7 @@ class ContactReasonsController extends AppController
     public function edit($id = null)
     {
         $contactReason = $this->ContactReasons->get($id, [
-            'contain' => []
+            'contain' => ['Contacts']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $contactReason = $this->ContactReasons->patchEntity($contactReason, $this->request->getData());
@@ -81,7 +83,8 @@ class ContactReasonsController extends AppController
             }
             $this->Flash->error(__('The contact reason could not be saved. Please, try again.'));
         }
-        $this->set(compact('contactReason'));
+        $contacts = $this->ContactReasons->Contacts->find('list', ['limit' => 200]);
+        $this->set(compact('contactReason', 'contacts'));
     }
 
     /**

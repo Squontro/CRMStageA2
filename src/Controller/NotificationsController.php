@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class NotificationsController extends AppController
 {
+
     /**
      * Index method
      *

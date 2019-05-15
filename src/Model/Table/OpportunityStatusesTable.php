@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\OpportunityStatus newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\OpportunityStatus[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\OpportunityStatus|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\OpportunityStatus saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\OpportunityStatus|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\OpportunityStatus patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\OpportunityStatus[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\OpportunityStatus findOrCreate($search, callable $callback = null, $options = [])
@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class OpportunityStatusesTable extends Table
 {
+
     /**
      * Initialize method
      *

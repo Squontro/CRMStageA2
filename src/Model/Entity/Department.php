@@ -7,8 +7,9 @@ use Cake\ORM\Entity;
  * Department Entity
  *
  * @property int $id
- * @property int $compagne_id
- * @property string|null $name
+ * @property string $name
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\Compagne $compagne
  * @property \App\Model\Entity\Service[] $services
@@ -26,8 +27,9 @@ class Department extends Entity
      * @var array
      */
     protected $_accessible = [
-        'compagne_id' => true,
         'name' => true,
+        'created' => true,
+        'modified' => true,
         'compagne' => true,
         'services' => true
     ];

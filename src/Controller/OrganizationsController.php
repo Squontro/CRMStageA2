@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class OrganizationsController extends AppController
 {
+
     /**
      * Index method
      *
@@ -37,7 +38,7 @@ class OrganizationsController extends AppController
     public function view($id = null)
     {
         $organization = $this->Organizations->get($id, [
-            'contain' => ['OrganizationTypes', 'OrganizationCategories', 'Contacts']
+            'contain' => ['OrganizationTypes', 'OrganizationCategories', 'Towns', 'Contacts']
         ]);
 
         $this->set('organization', $organization);
@@ -62,7 +63,8 @@ class OrganizationsController extends AppController
         }
         $organizationTypes = $this->Organizations->OrganizationTypes->find('list', ['limit' => 200]);
         $organizationCategories = $this->Organizations->OrganizationCategories->find('list', ['limit' => 200]);
-        $this->set(compact('organization', 'organizationTypes', 'organizationCategories'));
+        $towns = $this->Organizations->Towns->find('list', ['limit' => 200]);
+        $this->set(compact('organization', 'organizationTypes', 'organizationCategories', 'towns'));
     }
 
     /**
@@ -75,7 +77,7 @@ class OrganizationsController extends AppController
     public function edit($id = null)
     {
         $organization = $this->Organizations->get($id, [
-            'contain' => []
+            'contain' => ['Towns']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $organization = $this->Organizations->patchEntity($organization, $this->request->getData());
@@ -88,7 +90,8 @@ class OrganizationsController extends AppController
         }
         $organizationTypes = $this->Organizations->OrganizationTypes->find('list', ['limit' => 200]);
         $organizationCategories = $this->Organizations->OrganizationCategories->find('list', ['limit' => 200]);
-        $this->set(compact('organization', 'organizationTypes', 'organizationCategories'));
+        $towns = $this->Organizations->Towns->find('list', ['limit' => 200]);
+        $this->set(compact('organization', 'organizationTypes', 'organizationCategories', 'towns'));
     }
 
     /**

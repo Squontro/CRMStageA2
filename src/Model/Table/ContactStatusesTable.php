@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ContactStatus newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\ContactStatus[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\ContactStatus|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ContactStatus saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\ContactStatus|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\ContactStatus patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ContactStatus[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\ContactStatus findOrCreate($search, callable $callback = null, $options = [])
@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class ContactStatusesTable extends Table
 {
+
     /**
      * Initialize method
      *

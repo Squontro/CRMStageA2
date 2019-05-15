@@ -9,8 +9,9 @@ use Cake\Validation\Validator;
 /**
  * Towns Model
  *
- * @property \App\Model\Table\DairasTable|\Cake\ORM\Association\BelongsTo $Dairas
- * @property \App\Model\Table\EmployeesTable|\Cake\ORM\Association\HasMany $Employees
+ * @property |\Cake\ORM\Association\BelongsTo $Wilayas
+ * @property |\Cake\ORM\Association\HasMany $Contacts
+ * @property |\Cake\ORM\Association\BelongsToMany $Organizations
  *
  * @method \App\Model\Entity\Town get($primaryKey, $options = [])
  * @method \App\Model\Entity\Town newEntity($data = null, array $options = [])
@@ -20,6 +21,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Town patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Town[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Town findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class TownsTable extends Table
 {
@@ -38,12 +41,19 @@ class TownsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Dairas', [
-            'foreignKey' => 'daira_id',
+        $this->addBehavior('Timestamp');
+
+        $this->belongsTo('Wilayas', [
+            'foreignKey' => 'wilaya_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('Employees', [
+        $this->hasMany('Contacts', [
             'foreignKey' => 'town_id'
+        ]);
+        $this->belongsToMany('Organizations', [
+            'foreignKey' => 'town_id',
+            'targetForeignKey' => 'organization_id',
+            'joinTable' => 'organizations_towns'
         ]);
     }
 
@@ -56,13 +66,21 @@ class TownsTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->nonNegativeInteger('id')
+            ->integer('id')
             ->allowEmptyString('id', 'create');
 
         $validator
             ->scalar('name')
-            ->maxLength('name', 250)
-            ->allowEmptyString('name');
+            ->maxLength('name', 45)
+            ->requirePresence('name', 'create')
+            ->allowEmptyString('name', false)
+            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->scalar('postal_code')
+            ->maxLength('postal_code', 45)
+            ->requirePresence('postal_code', 'create')
+            ->allowEmptyString('postal_code', false);
 
         return $validator;
     }
@@ -76,7 +94,8 @@ class TownsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['daira_id'], 'Dairas'));
+        $rules->add($rules->isUnique(['name']));
+        $rules->add($rules->existsIn(['wilaya_id'], 'Wilayas'));
 
         return $rules;
     }

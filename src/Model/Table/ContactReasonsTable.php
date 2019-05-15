@@ -9,11 +9,13 @@ use Cake\Validation\Validator;
 /**
  * ContactReasons Model
  *
+ * @property |\Cake\ORM\Association\BelongsToMany $Contacts
+ *
  * @method \App\Model\Entity\ContactReason get($primaryKey, $options = [])
  * @method \App\Model\Entity\ContactReason newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\ContactReason[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\ContactReason|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ContactReason saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\ContactReason|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\ContactReason patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ContactReason[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\ContactReason findOrCreate($search, callable $callback = null, $options = [])
@@ -22,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class ContactReasonsTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -37,6 +40,12 @@ class ContactReasonsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->belongsToMany('Contacts', [
+            'foreignKey' => 'contact_reason_id',
+            'targetForeignKey' => 'contact_id',
+            'joinTable' => 'contact_reasons_contacts'
+        ]);
     }
 
     /**

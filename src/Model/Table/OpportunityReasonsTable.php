@@ -13,7 +13,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\OpportunityReason newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\OpportunityReason[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\OpportunityReason|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\OpportunityReason saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\OpportunityReason|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\OpportunityReason patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\OpportunityReason[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\OpportunityReason findOrCreate($search, callable $callback = null, $options = [])
@@ -22,6 +22,7 @@ use Cake\Validation\Validator;
  */
 class OpportunityReasonsTable extends Table
 {
+
     /**
      * Initialize method
      *

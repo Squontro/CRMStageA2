@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
+
 use App\Controller\AppController;
-use Cake\View\View;
 
 /**
  * Services Controller
@@ -12,22 +12,7 @@ use Cake\View\View;
  */
 class ServicesController extends AppController
 {
-    public function initialize()
-    {
-        parent::initialize();
-        $this->loadComponent('RequestHandler');
-    }
 
-/**
-     * Index method JSon
-     */
-public function  indexJson() {
-            $this->autoRender = false; // avoid to render view
-            $services = $this->Services->find('all');
-            $this->RequestHandler->respondAs('json');
-            $this->response->type('application/json');   
-            echo json_encode($services);
-                            }
     /**
      * Index method
      *
@@ -35,9 +20,6 @@ public function  indexJson() {
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Departments']
-        ];
         $services = $this->paginate($this->Services);
 
         $this->set(compact('services'));
@@ -53,7 +35,7 @@ public function  indexJson() {
     public function view($id = null)
     {
         $service = $this->Services->get($id, [
-            'contain' => ['Departments', 'Employees']
+            'contain' => []
         ]);
 
         $this->set('service', $service);
@@ -71,36 +53,14 @@ public function  indexJson() {
             $service = $this->Services->patchEntity($service, $this->request->getData());
             if ($this->Services->save($service)) {
                 $this->Flash->success(__('The service has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The service could not be saved. Please, try again.'));
         }
-        $departments = $this->Services->Departments->find('list', ['limit' => 200]);
-        $this->set(compact('service', 'departments'));
+        $this->set(compact('service'));
     }
-    /***
-    *Add methode JSon
-    */
-     function addJson(){
-         $this->autoRender = false; // avoid to render view
-         $service = $this->Services->newEntity();
-         if ($this->request->is('post')) {
-         $serviceData = $this->request->getData() ;
-         unset($serviceData["id"]) ;
-         $service = $this->Services->patchEntity($service, $serviceData);         
-        if ($this->Services->save($service)) {
-        $resultJ = json_encode(array('result' => 'success'));
-        $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-        } else {
-             $resultJ = json_encode(array('result' => 'error', 'errors' => $service->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-        }
-    }
-    }
+
     /**
      * Edit method
      *
@@ -110,8 +70,9 @@ public function  indexJson() {
      */
     public function edit($id = null)
     {
-        
-        $service = $this->Services->get($id, [ 'contain' => []]);
+        $service = $this->Services->get($id, [
+            'contain' => []
+        ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $service = $this->Services->patchEntity($service, $this->request->getData());
             if ($this->Services->save($service)) {
@@ -121,34 +82,9 @@ public function  indexJson() {
             }
             $this->Flash->error(__('The service could not be saved. Please, try again.'));
         }
-        $departments = $this->Services->Departments->find('list', ['limit' => 200]);
-        $this->set(compact('service', 'departments'));
+        $this->set(compact('service'));
     }
 
-    /**
-     * Edit method JSon
-     */
-     public function editJson()
-    {
-        $this->autoRender = false;
-        $serviceData = $this->request->getData();
-        $service = $this->Services->get($serviceData["id"], [ 'contain' => []]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $service = $this->Services->patchEntity($service, $serviceData);
-            if ($this->Services->save($service)) {
-               $resultJ = json_encode(array('result' => 'success'));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }else{
-                $resultJ = json_encode(array('result' => 'error', 'errors' => $service->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }
-        }
-        
-    }
     /**
      * Delete method
      *
@@ -168,73 +104,4 @@ public function  indexJson() {
 
         return $this->redirect(['action' => 'index']);
     }
-
-   /**
-     * Delete method JSon
-     */
-     public function deleteJson()
-    {
-        $this->autoRender = false;
-        $this->request->allowMethod(['post', 'delete']);
-        $serviceData = $this->request->getData() ;
-        $service = $this->Services->get($serviceData["id"], [ 'contain' => []]);
-        if ($this->request->is(['patch', 'post', 'delete'])) {
-            if ($this->Services->delete($service)) {
-               $resultJ = json_encode(array('result' => 'success'));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }else{
-                $resultJ = json_encode(array('result' => 'error', 'errors' => $service->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }
-        }
-        
-    }
-    /**
-     * Quick add service
-     *
-     */
-function showService() 
-{      
- $this->layout = 'ajax'; 
- $departments = $this->Services->Departments->find('list');
-$this->set(compact('departments'));              
-        }
-
-        function addservice() {
-                $this->autoRender = false;
-                $this->layout = 'ajax';
-                $service = $this->Services->newEntity();
-                if($this->request->is('ajax')) {
-                $service = $this->Services->patchEntity($service, $this->request->getData());
-                if ($this->Services->save($service)) {
-                        $serviceId = $service->id ;
-                        echo json_encode(array("response" => true, 'serviceId' => $serviceId));
-                    }else {
-                        echo json_encode(array("response" => false));
-                    } 
-
-                    }  
-                              
-
-                } 
-
-    function getServices()
-    {
-        $this->layout ='ajax';
-        $services = $this->Services->find('list')->toarray();
-        $selectedId = $this->request->query('id');
-        $this->set('services', $services);
-        $this->set('selectedId', $selectedId);
-    }
-
-    
-   
 }
-
-
-
-

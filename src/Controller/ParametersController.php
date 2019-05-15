@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class ParametersController extends AppController
 {
+
     /**
      * Index method
      *

@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class SectionsController extends AppController
 {
+
     /**
      * Index method
      *

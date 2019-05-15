@@ -9,9 +9,6 @@ use Cake\Validation\Validator;
 /**
  * Services Model
  *
- * @property \App\Model\Table\DepartmentsTable|\Cake\ORM\Association\BelongsTo $Departments
- * @property \App\Model\Table\EmployeesTable|\Cake\ORM\Association\HasMany $Employees
- *
  * @method \App\Model\Entity\Service get($primaryKey, $options = [])
  * @method \App\Model\Entity\Service newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Service[] newEntities(array $data, array $options = [])
@@ -20,6 +17,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Service patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Service[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Service findOrCreate($search, callable $callback = null, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ServicesTable extends Table
 {
@@ -38,13 +37,7 @@ class ServicesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Departments', [
-            'foreignKey' => 'department_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->hasMany('Employees', [
-            'foreignKey' => 'service_id'
-        ]);
+        $this->addBehavior('Timestamp');
     }
 
     /**
@@ -56,13 +49,15 @@ class ServicesTable extends Table
     public function validationDefault(Validator $validator)
     {
         $validator
-            ->nonNegativeInteger('id')
+            ->integer('id')
             ->allowEmptyString('id', 'create');
 
         $validator
             ->scalar('name')
-            ->maxLength('name', 250)
-            ->allowEmptyString('name');
+            ->maxLength('name', 45)
+            ->requirePresence('name', 'create')
+            ->allowEmptyString('name', false)
+            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         return $validator;
     }
@@ -76,7 +71,7 @@ class ServicesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['department_id'], 'Departments'));
+        $rules->add($rules->isUnique(['name']));
 
         return $rules;
     }

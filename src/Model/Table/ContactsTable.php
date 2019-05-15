@@ -15,14 +15,14 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\OrganizationsTable|\Cake\ORM\Association\BelongsTo $Organizations
  * @property \App\Model\Table\ContactStatusesTable|\Cake\ORM\Association\BelongsTo $ContactStatuses
- * @property \App\Model\Table\ContactOpportunitiesTable|\Cake\ORM\Association\HasMany $ContactOpportunities
- * @property \App\Model\Table\ContactStatusReasonsTable|\Cake\ORM\Association\HasMany $ContactStatusReasons
+ * @property |\Cake\ORM\Association\BelongsToMany $ContactReasons
+ * @property |\Cake\ORM\Association\BelongsToMany $Opportunities
  *
  * @method \App\Model\Entity\Contact get($primaryKey, $options = [])
  * @method \App\Model\Entity\Contact newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Contact[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Contact|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Contact saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Contact|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Contact patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Contact[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Contact findOrCreate($search, callable $callback = null, $options = [])
@@ -31,6 +31,7 @@ use Cake\Validation\Validator;
  */
 class ContactsTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -70,11 +71,15 @@ class ContactsTable extends Table
             'foreignKey' => 'contact_status_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('ContactOpportunities', [
-            'foreignKey' => 'contact_id'
+        $this->belongsToMany('ContactReasons', [
+            'foreignKey' => 'contact_id',
+            'targetForeignKey' => 'contact_reason_id',
+            'joinTable' => 'contact_reasons_contacts'
         ]);
-        $this->hasMany('ContactStatusReasons', [
-            'foreignKey' => 'contact_id'
+        $this->belongsToMany('Opportunities', [
+            'foreignKey' => 'contact_id',
+            'targetForeignKey' => 'opportunity_id',
+            'joinTable' => 'contacts_opportunities'
         ]);
     }
 

@@ -18,9 +18,7 @@ class ServicesControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Services',
-        'app.Departments',
-        'app.Employees'
+        'app.Services'
     ];
 
     /**

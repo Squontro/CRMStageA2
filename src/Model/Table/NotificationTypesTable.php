@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\NotificationType newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\NotificationType[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\NotificationType|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\NotificationType saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\NotificationType|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\NotificationType patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\NotificationType[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\NotificationType findOrCreate($search, callable $callback = null, $options = [])
@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class NotificationTypesTable extends Table
 {
+
     /**
      * Initialize method
      *

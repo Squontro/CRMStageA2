@@ -13,23 +13,6 @@ use App\Controller\AppController;
 class DocumentTypesController extends AppController
 {
 
-
-
-    /**
-     * Index method JSon
-     */
- public function  indexJson() {
-            $this->autoRender = false; // avoid to render view
-           $documentTypes = $this->DocumentTypes->find('all');
-            $this->RequestHandler->respondAs('json');
-            $this->autoRender = false; 
-            $content = json_encode($documentTypes);
-            $this->response->body($content);
-           $this->response->type('json');
-            return $this->response;
-                                }
-
-
     /**
      * Index method
      *
@@ -52,7 +35,7 @@ class DocumentTypesController extends AppController
     public function view($id = null)
     {
         $documentType = $this->DocumentTypes->get($id, [
-            'contain' => ['EmpDocuments']
+            'contain' => []
         ]);
 
         $this->set('documentType', $documentType);
@@ -78,32 +61,6 @@ class DocumentTypesController extends AppController
         $this->set(compact('documentType'));
     }
 
-      /***
-    *Add methode JSon
-    */
-     function addJson(){
-         $this->autoRender = false; // avoid to render view
-         $documentType = $this->DocumentTypes->newEntity();
-        if ($this->request->is('post')) {
-         $documentTypeData = $this->request->getData() ;
-         unset($documentTypeData["id"]) ;
-         $documentType = $this->DocumentTypes->patchEntity($documentType, $documentTypeData);         
-        if ($this->DocumentTypes->save($documentType)) {
-        $resultJ = json_encode(array('result' => 'success'));
-        $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-        } else {
-             $resultJ = json_encode(array('result' => 'error', 'errors' => $documentType->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-        }
-        }
-    }
-
-    
-
     /**
      * Edit method
      *
@@ -128,34 +85,6 @@ class DocumentTypesController extends AppController
         $this->set(compact('documentType'));
     }
 
-   /**
-     * Edit method JSon
-     */
-     public function editJson()
-    {
-        $this->autoRender = false;
-        $documentTypeData = $this->request->getData() ;
-        $documentType = $this->DocumentTypes->get($documentTypeData["id"], [ 'contain' => []]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $documentType = $this->DocumentTypes->patchEntity($documentType, $documentTypeData);
-            if ($this->DocumentTypes->save($documentType)) {
-               $resultJ = json_encode(array('result' => 'success'));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }else{
-                $resultJ = json_encode(array('result' => 'error', 'errors' => $documentType->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }
-        }
-        
-    }
-
-
-
-
     /**
      * Delete method
      *
@@ -174,32 +103,5 @@ class DocumentTypesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
-    }
-
-
-
-    /**
-     * Delete method JSon
-     */
-     public function deleteJson()
-    {
-        $this->autoRender = false;
-        $this->request->allowMethod(['post', 'delete']);
-        $documentTypeData = $this->request->getData() ;
-        $documentType = $this->DocumentTypes->get($documentTypeData["id"], [ 'contain' => []]);
-        if ($this->request->is(['patch', 'post', 'delete'])) {
-            if ($this->DocumentTypes->delete($documentType)) {
-            $resultJ = json_encode(array('result' => 'success'));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }else{
-            $resultJ = json_encode(array('result' => 'error', 'errors' => $documentType->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }
-        }
-        
     }
 }

@@ -13,7 +13,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ProspectStatus newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\ProspectStatus[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\ProspectStatus|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ProspectStatus saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\ProspectStatus|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\ProspectStatus patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ProspectStatus[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\ProspectStatus findOrCreate($search, callable $callback = null, $options = [])
@@ -22,6 +22,7 @@ use Cake\Validation\Validator;
  */
 class ProspectStatusesTable extends Table
 {
+
     /**
      * Initialize method
      *

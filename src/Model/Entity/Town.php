@@ -7,8 +7,11 @@ use Cake\ORM\Entity;
  * Town Entity
  *
  * @property int $id
- * @property int $daira_id
- * @property string|null $name
+ * @property string $name
+ * @property string $postal_code
+ * @property int $wilaya_id
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\Daira $daira
  * @property \App\Model\Entity\Employee[] $employees
@@ -26,9 +29,11 @@ class Town extends Entity
      * @var array
      */
     protected $_accessible = [
-        'daira_id' => true,
-         'code' => true,
         'name' => true,
+        'postal_code' => true,
+        'wilaya_id' => true,
+        'created' => true,
+        'modified' => true,
         'daira' => true,
         'employees' => true
     ];

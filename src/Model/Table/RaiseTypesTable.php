@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\RaiseType newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\RaiseType[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\RaiseType|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\RaiseType saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\RaiseType|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\RaiseType patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\RaiseType[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\RaiseType findOrCreate($search, callable $callback = null, $options = [])
@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class RaiseTypesTable extends Table
 {
+
     /**
      * Initialize method
      *

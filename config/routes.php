@@ -43,20 +43,13 @@ use Cake\Routing\Route\DashedRoute;
  * constructor in your `src/Application.php` file to change this behavior.
  *
  */
-
-
-
-
 Router::defaultRouteClass(DashedRoute::class);
+
 Router::scope('/', function (RouteBuilder $routes) {
     // Register scoped middleware for in scopes.
-    $routes->addExtensions(['pdf']);
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
         'httpOnly' => true
     ]));
-
-
-    
 
     /**
      * Apply a middleware to the current route scope.

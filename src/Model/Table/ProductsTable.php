@@ -9,13 +9,13 @@ use Cake\Validation\Validator;
 /**
  * Products Model
  *
- * @property \App\Model\Table\OpportunityProductsTable|\Cake\ORM\Association\HasMany $OpportunityProducts
+ * @property |\Cake\ORM\Association\BelongsToMany $Opportunities
  *
  * @method \App\Model\Entity\Product get($primaryKey, $options = [])
  * @method \App\Model\Entity\Product newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Product[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Product|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Product saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Product|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Product patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Product[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Product findOrCreate($search, callable $callback = null, $options = [])
@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class ProductsTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -40,8 +41,10 @@ class ProductsTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('OpportunityProducts', [
-            'foreignKey' => 'product_id'
+        $this->belongsToMany('Opportunities', [
+            'foreignKey' => 'product_id',
+            'targetForeignKey' => 'opportunity_id',
+            'joinTable' => 'opportunities_products'
         ]);
     }
 

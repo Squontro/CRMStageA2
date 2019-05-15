@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class ActionsController extends AppController
 {
+
     /**
      * Index method
      *

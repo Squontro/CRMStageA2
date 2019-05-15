@@ -75,7 +75,7 @@ try {
 } catch (\Exception $e) {
     exit($e->getMessage() . "\n");
 }
-$this->addPlugin('Dompdf', ['bootstrap' => true, 'routes' => true]);
+
 /*
  * Load an environment local configuration file.
  * You can use a file like app_local.php to provide local overrides to your
@@ -87,7 +87,6 @@ $this->addPlugin('Dompdf', ['bootstrap' => true, 'routes' => true]);
  * When debug = true the metadata cache should only last
  * for a short time.
  */
- 
 if (Configure::read('debug')) {
     Configure::write('Cache._cake_model_.duration', '+2 minutes');
     Configure::write('Cache._cake_core_.duration', '+2 minutes');

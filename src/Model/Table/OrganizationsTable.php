@@ -12,12 +12,13 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\OrganizationTypesTable|\Cake\ORM\Association\BelongsTo $OrganizationTypes
  * @property \App\Model\Table\OrganizationCategoriesTable|\Cake\ORM\Association\BelongsTo $OrganizationCategories
  * @property \App\Model\Table\ContactsTable|\Cake\ORM\Association\HasMany $Contacts
+ * @property |\Cake\ORM\Association\BelongsToMany $Towns
  *
  * @method \App\Model\Entity\Organization get($primaryKey, $options = [])
  * @method \App\Model\Entity\Organization newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Organization[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Organization|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Organization saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Organization|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Organization patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Organization[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Organization findOrCreate($search, callable $callback = null, $options = [])
@@ -26,6 +27,7 @@ use Cake\Validation\Validator;
  */
 class OrganizationsTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -52,6 +54,11 @@ class OrganizationsTable extends Table
         ]);
         $this->hasMany('Contacts', [
             'foreignKey' => 'organization_id'
+        ]);
+        $this->belongsToMany('Towns', [
+            'foreignKey' => 'organization_id',
+            'targetForeignKey' => 'town_id',
+            'joinTable' => 'organizations_towns'
         ]);
     }
 

@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\EmployeeCategory newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\EmployeeCategory[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\EmployeeCategory|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\EmployeeCategory saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\EmployeeCategory|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\EmployeeCategory patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\EmployeeCategory[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\EmployeeCategory findOrCreate($search, callable $callback = null, $options = [])
@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class EmployeeCategoriesTable extends Table
 {
+
     /**
      * Initialize method
      *

@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Profile newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Profile[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Profile|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Profile saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Profile|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Profile patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Profile[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Profile findOrCreate($search, callable $callback = null, $options = [])
@@ -25,6 +25,7 @@ use Cake\Validation\Validator;
  */
 class ProfilesTable extends Table
 {
+
     /**
      * Initialize method
      *

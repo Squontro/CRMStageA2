@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  */
 class Product extends Entity
 {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

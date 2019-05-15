@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class CountriesController extends AppController
 {
+
     /**
      * Index method
      *
@@ -22,6 +23,21 @@ class CountriesController extends AppController
         $countries = $this->paginate($this->Countries);
 
         $this->set(compact('countries'));
+    }
+
+    /**
+     * Index method Json for JsGrid
+     * @return \Cake\Http\Response
+     */
+    public function  indexJson() {
+        $this->autoRender = false; // avoid to render view
+        $content = $this->Countries->find('all' ,  array('fields' => array('Countries.id' ,'Countries.name')));
+        $this->RequestHandler->respondAs('json');
+        $this->autoRender = false;
+        $content = json_encode($content);
+        $this->response->body($content);
+        $this->response->type('json');
+        return $this->response;
     }
 
     /**

@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class OrganizationTypesController extends AppController
 {
+
     /**
      * Index method
      *

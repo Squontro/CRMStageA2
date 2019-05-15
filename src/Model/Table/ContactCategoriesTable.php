@@ -13,7 +13,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\ContactCategory newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\ContactCategory[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\ContactCategory|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ContactCategory saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\ContactCategory|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\ContactCategory patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ContactCategory[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\ContactCategory findOrCreate($search, callable $callback = null, $options = [])
@@ -22,6 +22,7 @@ use Cake\Validation\Validator;
  */
 class ContactCategoriesTable extends Table
 {
+
     /**
      * Initialize method
      *

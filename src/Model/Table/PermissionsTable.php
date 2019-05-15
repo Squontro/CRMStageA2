@@ -17,7 +17,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Permission newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Permission[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Permission|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Permission saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Permission|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Permission patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Permission[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Permission findOrCreate($search, callable $callback = null, $options = [])
@@ -26,6 +26,7 @@ use Cake\Validation\Validator;
  */
 class PermissionsTable extends Table
 {
+
     /**
      * Initialize method
      *

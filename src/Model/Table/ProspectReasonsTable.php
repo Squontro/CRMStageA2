@@ -9,11 +9,13 @@ use Cake\Validation\Validator;
 /**
  * ProspectReasons Model
  *
+ * @property |\Cake\ORM\Association\BelongsToMany $Prospects
+ *
  * @method \App\Model\Entity\ProspectReason get($primaryKey, $options = [])
  * @method \App\Model\Entity\ProspectReason newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\ProspectReason[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\ProspectReason|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\ProspectReason saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\ProspectReason|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\ProspectReason patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\ProspectReason[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\ProspectReason findOrCreate($search, callable $callback = null, $options = [])
@@ -22,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class ProspectReasonsTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -37,6 +40,12 @@ class ProspectReasonsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->belongsToMany('Prospects', [
+            'foreignKey' => 'prospect_reason_id',
+            'targetForeignKey' => 'prospect_id',
+            'joinTable' => 'prospect_reasons_prospects'
+        ]);
     }
 
     /**

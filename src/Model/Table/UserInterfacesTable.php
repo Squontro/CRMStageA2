@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\UserInterface newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\UserInterface[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\UserInterface|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\UserInterface saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\UserInterface|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\UserInterface patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\UserInterface[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\UserInterface findOrCreate($search, callable $callback = null, $options = [])
@@ -25,6 +25,7 @@ use Cake\Validation\Validator;
  */
 class UserInterfacesTable extends Table
 {
+
     /**
      * Initialize method
      *

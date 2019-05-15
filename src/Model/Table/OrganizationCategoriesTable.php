@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\OrganizationCategory newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\OrganizationCategory[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\OrganizationCategory|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\OrganizationCategory saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\OrganizationCategory|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\OrganizationCategory patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\OrganizationCategory[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\OrganizationCategory findOrCreate($search, callable $callback = null, $options = [])
@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class OrganizationCategoriesTable extends Table
 {
+
     /**
      * Initialize method
      *

@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\OrganizationType newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\OrganizationType[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\OrganizationType|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\OrganizationType saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\OrganizationType|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\OrganizationType patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\OrganizationType[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\OrganizationType findOrCreate($search, callable $callback = null, $options = [])
@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  */
 class OrganizationTypesTable extends Table
 {
+
     /**
      * Initialize method
      *

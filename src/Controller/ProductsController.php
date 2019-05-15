@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class ProductsController extends AppController
 {
+
     /**
      * Index method
      *
@@ -34,7 +35,7 @@ class ProductsController extends AppController
     public function view($id = null)
     {
         $product = $this->Products->get($id, [
-            'contain' => ['OpportunityProducts']
+            'contain' => ['Opportunities']
         ]);
 
         $this->set('product', $product);
@@ -57,7 +58,8 @@ class ProductsController extends AppController
             }
             $this->Flash->error(__('The product could not be saved. Please, try again.'));
         }
-        $this->set(compact('product'));
+        $opportunities = $this->Products->Opportunities->find('list', ['limit' => 200]);
+        $this->set(compact('product', 'opportunities'));
     }
 
     /**
@@ -70,7 +72,7 @@ class ProductsController extends AppController
     public function edit($id = null)
     {
         $product = $this->Products->get($id, [
-            'contain' => []
+            'contain' => ['Opportunities']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $product = $this->Products->patchEntity($product, $this->request->getData());
@@ -81,7 +83,8 @@ class ProductsController extends AppController
             }
             $this->Flash->error(__('The product could not be saved. Please, try again.'));
         }
-        $this->set(compact('product'));
+        $opportunities = $this->Products->Opportunities->find('list', ['limit' => 200]);
+        $this->set(compact('product', 'opportunities'));
     }
 
     /**

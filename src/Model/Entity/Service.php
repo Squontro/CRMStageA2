@@ -7,8 +7,9 @@ use Cake\ORM\Entity;
  * Service Entity
  *
  * @property int $id
- * @property int $department_id
- * @property string|null $name
+ * @property string $name
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\Department $department
  * @property \App\Model\Entity\Employee[] $employees
@@ -26,8 +27,9 @@ class Service extends Entity
      * @var array
      */
     protected $_accessible = [
-        'department_id' => true,
         'name' => true,
+        'created' => true,
+        'modified' => true,
         'department' => true,
         'employees' => true
     ];

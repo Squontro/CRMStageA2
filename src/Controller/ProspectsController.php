@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class ProspectsController extends AppController
 {
+
     /**
      * Index method
      *
@@ -37,7 +38,7 @@ class ProspectsController extends AppController
     public function view($id = null)
     {
         $prospect = $this->Prospects->get($id, [
-            'contain' => ['Users', 'Sources', 'ProspectStatuses', 'ProspectStatusesReasons']
+            'contain' => ['Users', 'Sources', 'ProspectStatuses', 'ProspectReasons']
         ]);
 
         $this->set('prospect', $prospect);
@@ -60,11 +61,11 @@ class ProspectsController extends AppController
             }
             $this->Flash->error(__('The prospect could not be saved. Please, try again.'));
         }
-        $source = $this->Prospects->Sources->newEntity();
         $users = $this->Prospects->Users->find('list', ['limit' => 200]);
         $sources = $this->Prospects->Sources->find('list', ['limit' => 200]);
         $prospectStatuses = $this->Prospects->ProspectStatuses->find('list', ['limit' => 200]);
-        $this->set(compact('prospect', 'users', 'sources', 'prospectStatuses'));
+        $prospectReasons = $this->Prospects->ProspectReasons->find('list', ['limit' => 200]);
+        $this->set(compact('prospect', 'users', 'sources', 'prospectStatuses', 'prospectReasons'));
     }
 
     /**
@@ -77,7 +78,7 @@ class ProspectsController extends AppController
     public function edit($id = null)
     {
         $prospect = $this->Prospects->get($id, [
-            'contain' => []
+            'contain' => ['ProspectReasons']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $prospect = $this->Prospects->patchEntity($prospect, $this->request->getData());
@@ -91,7 +92,8 @@ class ProspectsController extends AppController
         $users = $this->Prospects->Users->find('list', ['limit' => 200]);
         $sources = $this->Prospects->Sources->find('list', ['limit' => 200]);
         $prospectStatuses = $this->Prospects->ProspectStatuses->find('list', ['limit' => 200]);
-        $this->set(compact('prospect', 'users', 'sources', 'prospectStatuses'));
+        $prospectReasons = $this->Prospects->ProspectReasons->find('list', ['limit' => 200]);
+        $this->set(compact('prospect', 'users', 'sources', 'prospectStatuses', 'prospectReasons'));
     }
 
     /**
@@ -113,16 +115,4 @@ class ProspectsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-
-    public function transform($id = null){
-        return $this->redirect(['controller' => 'Contacts', 'action' => 'add', $id]);
-    }
-
-    public function refresh(){
-        $users = $this->Prospects->Users->find('list', ['limit' => 200]);
-        $sources = $this->Prospects->Sources->find('list', ['limit' => 200]);
-        $prospectStatuses = $this->Prospects->ProspectStatuses->find('list', ['limit' => 200]);
-        $this->set(compact('users', 'sources', 'prospectStatuses'));
-    }
-
 }

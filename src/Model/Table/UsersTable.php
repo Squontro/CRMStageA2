@@ -20,7 +20,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\User saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\User|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
@@ -29,6 +29,7 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table
 {
+
     /**
      * Initialize method
      *
@@ -80,10 +81,10 @@ class UsersTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->scalar('name')
-            ->maxLength('name', 45)
-            ->requirePresence('name', 'create')
-            ->allowEmptyString('name', false);
+            ->scalar('last_name')
+            ->maxLength('last_name', 45)
+            ->requirePresence('last_name', 'create')
+            ->allowEmptyString('last_name', false);
 
         $validator
             ->scalar('first_name')

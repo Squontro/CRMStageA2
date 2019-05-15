@@ -43,7 +43,7 @@ class AppController extends Controller
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
-        $this->loadComponent('Auth', [
+        /* $this->loadComponent('Auth', [
             'authenticate' => [
                 'Form' => [
                     'fields' => ['username' => 'email',
@@ -51,11 +51,11 @@ class AppController extends Controller
                     ]
                 ]
             ],
-            'loginRedirect' => [
+            'loginAction' => [
                 'controller' =>'Users' ,
                 'action' =>'login'
             ]
-        ]);
+        ]); */
     }
 
 

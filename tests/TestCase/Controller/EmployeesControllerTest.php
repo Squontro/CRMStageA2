@@ -19,19 +19,16 @@ class EmployeesControllerTest extends TestCase
      */
     public $fixtures = [
         'app.Employees',
-        'app.Towns',
+        'app.Departments',
         'app.Services',
-        'app.SchoolLevels',
-        'app.AbsEmployees',
-        'app.Consultations',
-        'app.EmpDeplomes',
-        'app.EmpDocuments',
-        'app.EmployeLanguages',
-        'app.Experiences',
-        'app.HistJobs',
-        'app.Joints',
-        'app.Leaves',
-        'app.Qualifications'
+        'app.EmployeeCategories',
+        'app.Roles',
+        'app.BloodGroups',
+        'app.Users',
+        'app.Documents',
+        'app.Skills',
+        'app.DocumentsEmployees',
+        'app.EmployeesSkills'
     ];
 
     /**

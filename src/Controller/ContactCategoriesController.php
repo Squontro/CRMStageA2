@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class ContactCategoriesController extends AppController
 {
+
     /**
      * Index method
      *

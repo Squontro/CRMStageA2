@@ -13,21 +13,6 @@ use App\Controller\AppController;
 class TownsController extends AppController
 {
 
-
-    /**
-     * Index method JSon
-     */
-    public function  indexJson() {
-            $this->autoRender = false; // avoid to render view
-            $towns = $this->Towns->find('all' ,  array('fields' => array('Towns.id' ,'Towns.code','Towns.daira_id','Towns.name')));
-            $this->RequestHandler->respondAs('json');
-            $this->autoRender = false; 
-            $content = json_encode($towns);
-            $this->response->body($content);
-            $this->response->type('json');
-            return $this->response;
-    }
-
     /**
      * Index method
      *
@@ -36,7 +21,7 @@ class TownsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Dairas']
+            'contain' => ['Wilayas']
         ];
         $towns = $this->paginate($this->Towns);
 
@@ -53,7 +38,7 @@ class TownsController extends AppController
     public function view($id = null)
     {
         $town = $this->Towns->get($id, [
-            'contain' => ['Dairas', 'Employees']
+            'contain' => ['Wilayas', 'Organizations', 'Contacts']
         ]);
 
         $this->set('town', $town);
@@ -76,35 +61,10 @@ class TownsController extends AppController
             }
             $this->Flash->error(__('The town could not be saved. Please, try again.'));
         }
-        $dairas = $this->Towns->Dairas->find('list', ['limit' => 200]);
-        $this->set(compact('town', 'dairas'));
+        $wilayas = $this->Towns->Wilayas->find('list', ['limit' => 200]);
+        $organizations = $this->Towns->Organizations->find('list', ['limit' => 200]);
+        $this->set(compact('town', 'wilayas', 'organizations'));
     }
-
-
-   /***
-    *Add methode JSon
-    */
-     function addJson(){
-         $this->autoRender = false; // avoid to render view
-         $town = $this->Towns->newEntity();
-        if ($this->request->is('post')) {
-         $townData = $this->request->getData() ;
-         unset($townData["id"]) ;
-         $town = $this->Towns->patchEntity($town, $townData);         
-        if ($this->Towns->save($town)) {
-        $resultJ = json_encode(array('result' => 'success'));
-        $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-        } else {
-             $resultJ = json_encode(array('result' => 'error', 'errors' => $town->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-        }
-        }
-    }
-
 
     /**
      * Edit method
@@ -116,7 +76,7 @@ class TownsController extends AppController
     public function edit($id = null)
     {
         $town = $this->Towns->get($id, [
-            'contain' => []
+            'contain' => ['Organizations']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $town = $this->Towns->patchEntity($town, $this->request->getData());
@@ -127,36 +87,10 @@ class TownsController extends AppController
             }
             $this->Flash->error(__('The town could not be saved. Please, try again.'));
         }
-        $dairas = $this->Towns->Dairas->find('list', ['limit' => 200]);
-        $this->set(compact('town', 'dairas'));
+        $wilayas = $this->Towns->Wilayas->find('list', ['limit' => 200]);
+        $organizations = $this->Towns->Organizations->find('list', ['limit' => 200]);
+        $this->set(compact('town', 'wilayas', 'organizations'));
     }
-/**
-     * Edit method JSon
-     */
-     public function editJson()
-    {
-        $this->autoRender = false;
-        $townData = $this->request->getData() ;
-        $town = $this->Towns->get($townData["id"], [ 'contain' => []]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $town = $this->Towns->patchEntity($town, $townData);
-            if ($this->Towns->save($town)) {
-               $resultJ = json_encode(array('result' => 'success'));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }else{
-                $resultJ = json_encode(array('result' => 'error', 'errors' => $town->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }
-        }
-        
-    }
-
-
-
 
     /**
      * Delete method
@@ -176,31 +110,5 @@ class TownsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
-    }
-
-
-    /**
-     * Delete method JSon
-     */
-     public function deleteJson()
-    {
-        $this->autoRender = false;
-        $this->request->allowMethod(['post', 'delete']);
-        $townData = $this->request->getData() ;
-        $town = $this->Towns->get($townData["id"], [ 'contain' => []]);
-        if ($this->request->is(['patch', 'post', 'delete'])) {
-            if ($this->Towns->delete($town)) {
-               $resultJ = json_encode(array('result' => 'success'));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }else{
-                $resultJ = json_encode(array('result' => 'error', 'errors' => $town->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }
-        }
-        
     }
 }

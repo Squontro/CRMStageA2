@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  */
 class Notification extends Entity
 {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

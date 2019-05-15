@@ -17,7 +17,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Source newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Source[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Source|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Source saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Source|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Source patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Source[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Source findOrCreate($search, callable $callback = null, $options = [])
@@ -26,6 +26,7 @@ use Cake\Validation\Validator;
  */
 class SourcesTable extends Table
 {
+
     /**
      * Initialize method
      *

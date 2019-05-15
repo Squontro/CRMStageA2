@@ -16,7 +16,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\UserParameter newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\UserParameter[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\UserParameter|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\UserParameter saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\UserParameter|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\UserParameter patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\UserParameter[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\UserParameter findOrCreate($search, callable $callback = null, $options = [])
@@ -25,6 +25,7 @@ use Cake\Validation\Validator;
  */
 class UserParametersTable extends Table
 {
+
     /**
      * Initialize method
      *

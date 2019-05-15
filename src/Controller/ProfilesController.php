@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class ProfilesController extends AppController
 {
+
     /**
      * Index method
      *

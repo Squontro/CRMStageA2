@@ -7,50 +7,45 @@ use Cake\ORM\Entity;
  * Employee Entity
  *
  * @property int $id
- * @property int $town_id
- * @property int $service_id
- * @property int|null $school_level_id
- * @property string $civilitty
- * @property string|null $matricule
+ * @property string $matricule
+ * @property string $name
  * @property string $first_name
- * @property string $laste_name
- * @property string|null $maiden_name
- * @property \Cake\I18n\FrozenDate|null $date_birth
- * @property string|null $presume
+ * @property string $email
+ * @property string $phone_number
+ * @property int $department_id
+ * @property int $services_id
+ * @property int $employee_category_id
+ * @property int $role_id
+ * @property \Cake\I18n\FrozenDate $date_entered
+ * @property \Cake\I18n\FrozenDate $date_birth
+ * @property int $blood_group_id
+ * @property \Cake\I18n\FrozenDate|null $date_out
+ * @property string|null $postal_address
  * @property string|null $last_name_father
- * @property string|null $first_name_mother
+ * @property string|null $first_name_father
  * @property string|null $last_name_mother
- * @property string $fami_situation
- * @property string $sex
- * @property string|null $adresse
- * @property string|null $email
- * @property string|null $phone_numbre
- * @property string|null $postal_code
- * @property int|null $nbr_child
- * @property string|null $nationality
- * @property string|null $nationality_service
- * @property string|null $blood_group
+ * @property string|null $first_name_mother
  * @property string|null $ccp_number
  * @property string|null $ss_number
- * @property float|null $salary
- * @property string|null $anem_number
- * @property bool|null $anem
  * @property string|null $photo
- * @property string|null $obs
- * @property \Cake\I18n\FrozenTime|null $created
- * @property \Cake\I18n\FrozenTime|null $modified
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\Town $town
  * @property \App\Model\Entity\Service $service
+ * @property \App\Model\Entity\Job $job
  * @property \App\Model\Entity\SchoolLevel $school_level
  * @property \App\Model\Entity\AbsEmployee[] $abs_employees
  * @property \App\Model\Entity\Consultation[] $consultations
- * @property \App\Model\Entity\EmpDeplome[] $emp_deplomes
- * @property \App\Model\Entity\EmpDocument[] $emp_documents
+ * @property \App\Model\Entity\Deplome[] $deplomes
+ * @property \App\Model\Entity\DocumentType[] $document_types
+ * @property \App\Model\Entity\EmployeesDeplome[] $employees_deplomes
+ * @property \App\Model\Entity\EmployeesDocument[] $employees_documents
  * @property \App\Model\Entity\EmployeLanguage[] $employe_languages
  * @property \App\Model\Entity\Experience[] $experiences
  * @property \App\Model\Entity\HistJob[] $hist_jobs
  * @property \App\Model\Entity\Joint[] $joints
+ * @property \App\Model\Entity\Child[] $childs
  * @property \App\Model\Entity\Leave[] $leaves
  * @property \App\Model\Entity\Qualification[] $qualifications
  */
@@ -67,45 +62,38 @@ class Employee extends Entity
      * @var array
      */
     protected $_accessible = [
-        'town_id' => true,
-        'service_id' => true,
-         'job_id' =>true ,
-         'date_entred' =>true ,
-         'date_out' =>true ,
-        'school_level_id' => true,
-        'civilitty' => true,
         'matricule' => true,
+        'name' => true,
         'first_name' => true,
-        'laste_name' => true,
-        'date_birth' => true,
-        'presume' => true,
-        'last_name_father' => true,
-        'first_name_mother' => true,
-        'last_name_mother' => true,
-        'fami_situation' => true,
-        'sex' => true,
-        'adresse' => true,
         'email' => true,
-        'phone_numbre' => true,
-        'postal_code' => true,
-        'nbr_child' => true,
-        'nationality' => true,
-        'nationality_service' => true,
-        'blood_group' => true,
+        'phone_number' => true,
+        'department_id' => true,
+        'services_id' => true,
+        'employee_category_id' => true,
+        'role_id' => true,
+        'date_entered' => true,
+        'date_birth' => true,
+        'blood_group_id' => true,
+        'date_out' => true,
+        'postal_address' => true,
+        'last_name_father' => true,
+        'first_name_father' => true,
+        'last_name_mother' => true,
+        'first_name_mother' => true,
         'ccp_number' => true,
         'ss_number' => true,
         'photo' => true,
-        'obs' => true,
         'created' => true,
         'modified' => true,
         'town' => true,
         'service' => true,
+        'job' => true,
         'school_level' => true,
         'abs_employees' => true,
         'consultations' => true,
-        'deplomes' => true ,
+        'deplomes' => true,
+        'document_types' => true,
         'employees_deplomes' => true,
-        'document_types' => true ,
         'employees_documents' => true,
         'employe_languages' => true,
         'experiences' => true,

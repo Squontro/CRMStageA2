@@ -13,20 +13,6 @@ use App\Controller\AppController;
 class DepartmentsController extends AppController
 {
 
-
-/**
-     * Index method JSon
-     */
-public function  indexJson() {
-            $this->autoRender = false; // avoid to render view
-            $departments = $this->Departments->find('all');
-            $this->RequestHandler->respondAs('json');
-            $this->response->type('application/json');   
-            echo json_encode($departments);
-                            }
-
-
-
     /**
      * Index method
      *
@@ -34,9 +20,6 @@ public function  indexJson() {
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Compagnes']
-        ];
         $departments = $this->paginate($this->Departments);
 
         $this->set(compact('departments'));
@@ -52,7 +35,7 @@ public function  indexJson() {
     public function view($id = null)
     {
         $department = $this->Departments->get($id, [
-            'contain' => ['Compagnes', 'Services']
+            'contain' => ['Employees']
         ]);
 
         $this->set('department', $department);
@@ -75,31 +58,7 @@ public function  indexJson() {
             }
             $this->Flash->error(__('The department could not be saved. Please, try again.'));
         }
-        $compagnes = $this->Departments->Compagnes->find('list', ['limit' => 200]);
-        $this->set(compact('department', 'compagnes'));
-    }
-    /***
-    *Add methode JSon
-    */
-     function addJson(){
-         $this->autoRender = false; // avoid to render view
-         $department = $this->Departments->newEntity();
-         if ($this->request->is('post')) {
-         $departmentData = $this->request->getData() ;
-         unset($departmentData["id"]) ;
-         $department = $this->Departments->patchEntity($department, $departmentData);         
-        if ($this->Departments->save($department)) {
-        $resultJ = json_encode(array('result' => 'success'));
-        $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-        } else {
-             $resultJ = json_encode(array('result' => 'error', 'errors' => $department->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-        }
-    }
+        $this->set(compact('department'));
     }
 
     /**
@@ -123,37 +82,8 @@ public function  indexJson() {
             }
             $this->Flash->error(__('The department could not be saved. Please, try again.'));
         }
-        $compagnes = $this->Departments->Compagnes->find('list', ['limit' => 200]);
-        $this->set(compact('department', 'compagnes'));
+        $this->set(compact('department'));
     }
-   
-    /**
-     * Edit method JSon
-     */
-     public function editJson()
-    {
-        $this->autoRender = false;
-        //$service = $this->Services->get($id, [ 'contain' => []]);
-        $departmentData = $this->request->getData() ;
-        $department = $this->Departments->get($departmentData["id"], [ 'contain' => []]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $department = $this->Departments->patchEntity($department, $departmentData);
-            if ($this->Departments->save($department)) {
-               $resultJ = json_encode(array('result' => 'success'));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }else{
-                $resultJ = json_encode(array('result' => 'error', 'errors' => $department->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }
-        }
-        
-    }
- 
-
 
     /**
      * Delete method
@@ -173,31 +103,5 @@ public function  indexJson() {
         }
 
         return $this->redirect(['action' => 'index']);
-    }
-
-
-    /**
-     * Delete method JSon
-     */
-     public function deleteJson()
-    {
-        $this->autoRender = false;
-        $this->request->allowMethod(['post', 'delete']);
-        $departmentData = $this->request->getData() ;
-        $department = $this->Departments->get($departmentData["id"], [ 'contain' => []]);
-        if ($this->request->is(['patch', 'post', 'delete'])) {
-            if ($this->Departments->delete($department)) {
-               $resultJ = json_encode(array('result' => 'success'));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }else{
-                $resultJ = json_encode(array('result' => 'error', 'errors' => $department->errors()));
-            $this->response->type('json');
-            $this->response->body($resultJ);
-            return $this->response;
-            }
-        }
-        
     }
 }

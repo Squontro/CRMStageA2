@@ -25,7 +25,8 @@ class DocumentTypesTableTest extends TestCase
      */
     public $fixtures = [
         'app.DocumentTypes',
-        'app.EmpDocuments'
+        'app.EmpDocuments',
+        'app.Employees'
     ];
 
     /**

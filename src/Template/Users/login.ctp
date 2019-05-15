@@ -1,9 +1,14 @@
+
+
+
+
 <div class="container-fluid">
   <div class="row">
     <?= $this->Flash->render() ?>
     <div class="col-sm-12">
       <!-- Authentication card start -->
-      <div class="login-card card-block auth-body">
+      <div class="login-card card-block auth-body">            
+        <?= $this->Flash->render() ?>
         <?= $this->Form->create() ?>
         <div class="text-center">
           <img src="../images/auth/logo.png" alt="logo.png">
@@ -16,7 +21,7 @@
           </div>
           <hr/>
           <div class="input-group">
-            <input type="email" class="form-control" name="email" placeholder="Your Email Address">
+            <input type="email" class="form-control" name="emailaddress" placeholder="Your Email Address">
             <span class="md-line"></span>
           </div>
           <div class="input-group">
@@ -38,6 +43,7 @@
               <img src="../images/auth/Logo-small-bottom.png" alt="small-logo.png">
             </div>
           </div>
+
         </div>
         <!-- end of form -->
       </div>

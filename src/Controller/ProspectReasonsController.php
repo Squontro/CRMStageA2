@@ -12,6 +12,7 @@ use App\Controller\AppController;
  */
 class ProspectReasonsController extends AppController
 {
+
     /**
      * Index method
      *
@@ -34,7 +35,7 @@ class ProspectReasonsController extends AppController
     public function view($id = null)
     {
         $prospectReason = $this->ProspectReasons->get($id, [
-            'contain' => []
+            'contain' => ['Prospects']
         ]);
 
         $this->set('prospectReason', $prospectReason);
@@ -57,7 +58,8 @@ class ProspectReasonsController extends AppController
             }
             $this->Flash->error(__('The prospect reason could not be saved. Please, try again.'));
         }
-        $this->set(compact('prospectReason'));
+        $prospects = $this->ProspectReasons->Prospects->find('list', ['limit' => 200]);
+        $this->set(compact('prospectReason', 'prospects'));
     }
 
     /**
@@ -70,7 +72,7 @@ class ProspectReasonsController extends AppController
     public function edit($id = null)
     {
         $prospectReason = $this->ProspectReasons->get($id, [
-            'contain' => []
+            'contain' => ['Prospects']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $prospectReason = $this->ProspectReasons->patchEntity($prospectReason, $this->request->getData());
@@ -81,7 +83,8 @@ class ProspectReasonsController extends AppController
             }
             $this->Flash->error(__('The prospect reason could not be saved. Please, try again.'));
         }
-        $this->set(compact('prospectReason'));
+        $prospects = $this->ProspectReasons->Prospects->find('list', ['limit' => 200]);
+        $this->set(compact('prospectReason', 'prospects'));
     }
 
     /**

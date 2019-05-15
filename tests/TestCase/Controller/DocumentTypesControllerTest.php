@@ -18,8 +18,7 @@ class DocumentTypesControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.DocumentTypes',
-        'app.EmpDocuments'
+        'app.DocumentTypes'
     ];
 
     /**

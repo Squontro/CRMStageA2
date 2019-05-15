@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
+  
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,29 +10,33 @@
     <meta name="keywords" content=", Flat ui, Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
     <meta name="author" content="Phoenixcoded">
 
-    <title>Gestion RH</title>
+    <title> <?= $this->fetch('title'); ?> </title>
+    
      <!-- JQuery -->
+    <?=  $this->Html->script('jquery-3.4.1')  ?> 
     <?=  $this->Html->script('jquery.min')  ?> 
     <?=  $this->Html->script('jquery-ui.min')  ?>
-    <!-- Required Fremwork -->
+    <?=  $this->Html->script('jquery.slimscroll.min')  ?>
+    <?=  $this->Html->script('i18next')  ?>
+    <!-- Bootstrap -->
     <?=  $this->Html->css('bootstrap'); ?>
-    <!-- themify icon -->
+    <!-- Themify icon -->
     <?=  $this->Html->css('assets/icon/themify-icons/themify-icons') ?>
-    <!-- ico font -->
+    <!-- IcoFont -->
     <?=  $this->Html->css('assets/icon/icofont/icofont') ?>
-    <!-- flag icon framework css -->
+    <!-- Flag icon framework css -->
     <?=  $this->Html->css('assets/pages/flag-icon/flag-icon.min') ?>
     <!-- Menu-Search css -->
     <?=  $this->Html->css('assets/pages/menu-search/css/component') ?>
     <!-- Horizontal-Timeline css -->
     <?=  $this->Html->css('assets/pages/dashboard/horizontal-timeline/css/style.css') ?>
-    <!-- amchart css -->
+    <!-- Amchart css -->
     <?=  $this->Html->css('assets/pages/dashboard/amchart/css/amchart') ?>
-    <!-- jpro forms css -->
+    <!-- Jpro forms css -->
     <?=  $this->Html->css('assets/pages/j-pro/css/demo.css') ?>
     <?=  $this->Html->css('assets/pages/j-pro/css/font-awesome.min.css') ?>
     <?=  $this->Html->css('assets/pages/j-pro/css/j-forms.css') ?>
-    <!-- flag icon framework css -->
+    <!-- Flag icon framework css -->
     <?=  $this->Html->css('assets/pages/flag-icon/flag-icon.min') ?>
     <!-- Menu-Search css -->
     <?=  $this->Html->css('assets/pages/menu-search/css/component') ?>    
@@ -46,10 +51,10 @@
     <?=  $this->Html->css('assets/css/linearicons') ?>
     <?=  $this->Html->css('assets/css/simple-line-icons') ?>
     <?=  $this->Html->css('assets/css/ionicons') ?>
-    <!-- Grid css -->
-    <?=  $this->Html->css('jsgrid.min') ?>
-    <?=  $this->Html->css('jsgrid-theme.min') ?> 
-   
+    <!-- Grid css and script -->
+    <?=  $this->Html->css('jsGrid/jsgrid.min') ?>
+    <?=  $this->Html->css('jsGrid/jsgrid-theme.min') ?> 
+    <?=  $this->Html->script('jsGrid/jsgrid.min') ?>
 
   </head>
   <body>
@@ -70,8 +75,9 @@
         <?= $this->element('content') ?>  
       </div>
     </div>
-    <!-- Required Jquery -->
+    <!-- Tether -->
     <?=  $this->Html->script('tether.min')  ?> 
+    <!-- Bootstrap -->
     <?=  $this->Html->script('bootstrap.min')  ?>
     <!-- Bootstrap date-time-picker js -->
     <?=  $this->Html->script('bootstrap-datepicker.min')  ?>
@@ -86,7 +92,6 @@
     <?=  $this->Html->script('assets/js/demo-12') ?>
     <?=  $this->Html->script('assets/js/jquery.mCustomScrollbar.concat.min')  ?>
     <?=  $this->Html->script('assets/js/jquery.mousewheel.min')  ?>
-    <!--Employee JSgrid JS-->
-    <?=  $this->Html->script('jsgride/jsgrid.min')  ?>
+
   </body>
 </html>

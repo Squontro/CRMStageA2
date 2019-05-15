@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
  * Raise Entity
  *
  * @property int $id
+ * @property string $name
  * @property \Cake\I18n\FrozenTime $date_notification
  * @property int $raise_type_id
  * @property int $raise_status_id
@@ -20,6 +21,7 @@ use Cake\ORM\Entity;
  */
 class Raise extends Entity
 {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -30,6 +32,7 @@ class Raise extends Entity
      * @var array
      */
     protected $_accessible = [
+        'name' => true,
         'date_notification' => true,
         'raise_type_id' => true,
         'raise_status_id' => true,

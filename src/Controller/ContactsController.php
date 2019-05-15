@@ -12,7 +12,7 @@ use App\Controller\AppController;
  */
 class ContactsController extends AppController
 {
-    
+
     /**
      * Index method
      *
@@ -38,7 +38,7 @@ class ContactsController extends AppController
     public function view($id = null)
     {
         $contact = $this->Contacts->get($id, [
-            'contain' => ['ContactCategories', 'Sources', 'Towns', 'Users', 'Organizations', 'ContactStatuses', 'ContactOpportunities', 'ContactStatusReasons']
+            'contain' => ['ContactCategories', 'Sources', 'Towns', 'Users', 'Organizations', 'ContactStatuses', 'ContactReasons', 'Opportunities']
         ]);
 
         $this->set('contact', $contact);
@@ -49,67 +49,27 @@ class ContactsController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add($id = null)
+    public function add()
     {
-        $this->loadModel('Prospects');
         $contact = $this->Contacts->newEntity();
-
-        // Initializes an empty array (to avoid errors and conditions in the view)
-        $prospect_to_array = [
-            'name' => '',
-            'first_name' => '', 
-            'email' => '', 
-            'telephone_number' => ''
-        ];
-
-        // Checks if the operation is a prospect transformation or not
-        if (isset($id)){
-            try {
-                $prospect = $this->Prospects->get($id);
-                $prospect_to_array = [
-                    'name' => $prospect->name, 
-                    'first_name' => $prospect->first_name, 
-                    'email' => $prospect->email, 
-                    'telephone_number' => $prospect->telephone_number
-                ];
-            }
-            catch (\InvalidArgumentException $e) {
-                $this->redirect(['action' => 'add']);
-                $this->Flash->error(__('Please enter a valid ID for the prospect'));
-            }    
-            catch (\Exception $e) {
-                $this->redirect(['action' => 'add']);
-                $this->Flash->error(__('The prospect doesn\'t exist'));
-            }  
-        }
-
-        // This is what happens when we hit submit
         if ($this->request->is('post')) {
             $contact = $this->Contacts->patchEntity($contact, $this->request->getData());
             if ($this->Contacts->save($contact)) {
                 $this->Flash->success(__('The contact has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
-                if(isset($id)){
-                    if ($this->Prospects->delete($prospect)){
-                        $this->Flash->success(__('The prospect has been deleted.'));
-                    }
-                    else{
-                        $this->Flash->error(__('The prospect could not be deleted. Please, try again.'));
-                        return $this->redirect(['action'=>'add']);
-                    }
-                }
             }
             $this->Flash->error(__('The contact could not be saved. Please, try again.'));
-
         }
-        
         $contactCategories = $this->Contacts->ContactCategories->find('list', ['limit' => 200]);
         $sources = $this->Contacts->Sources->find('list', ['limit' => 200]);
         $towns = $this->Contacts->Towns->find('list', ['limit' => 200]);
         $users = $this->Contacts->Users->find('list', ['limit' => 200]);
         $organizations = $this->Contacts->Organizations->find('list', ['limit' => 200]);
         $contactStatuses = $this->Contacts->ContactStatuses->find('list', ['limit' => 200]);
-        $this->set(compact('prospect_to_array', 'contact', 'contactCategories', 'sources', 'towns', 'users', 'organizations', 'contactStatuses'));
+        $contactReasons = $this->Contacts->ContactReasons->find('list', ['limit' => 200]);
+        $opportunities = $this->Contacts->Opportunities->find('list', ['limit' => 200]);
+        $this->set(compact('contact', 'contactCategories', 'sources', 'towns', 'users', 'organizations', 'contactStatuses', 'contactReasons', 'opportunities'));
     }
 
     /**
@@ -122,7 +82,7 @@ class ContactsController extends AppController
     public function edit($id = null)
     {
         $contact = $this->Contacts->get($id, [
-            'contain' => []
+            'contain' => ['ContactReasons', 'Opportunities']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $contact = $this->Contacts->patchEntity($contact, $this->request->getData());
@@ -139,7 +99,9 @@ class ContactsController extends AppController
         $users = $this->Contacts->Users->find('list', ['limit' => 200]);
         $organizations = $this->Contacts->Organizations->find('list', ['limit' => 200]);
         $contactStatuses = $this->Contacts->ContactStatuses->find('list', ['limit' => 200]);
-        $this->set(compact('contact', 'contactCategories', 'sources', 'towns', 'users', 'organizations', 'contactStatuses'));
+        $contactReasons = $this->Contacts->ContactReasons->find('list', ['limit' => 200]);
+        $opportunities = $this->Contacts->Opportunities->find('list', ['limit' => 200]);
+        $this->set(compact('contact', 'contactCategories', 'sources', 'towns', 'users', 'organizations', 'contactStatuses', 'contactReasons', 'opportunities'));
     }
 
     /**

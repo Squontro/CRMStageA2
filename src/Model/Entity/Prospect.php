@@ -13,7 +13,7 @@ use Cake\ORM\Entity;
  * @property string|null $telephone_number
  * @property int $user_id
  * @property int $source_id
- * @property int $prospect_status_id
+ * @property int $propsect_status_id
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -24,6 +24,7 @@ use Cake\ORM\Entity;
  */
 class Prospect extends Entity
 {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -40,7 +41,7 @@ class Prospect extends Entity
         'telephone_number' => true,
         'user_id' => true,
         'source_id' => true,
-        'prospect_status_id' => true,
+        'propsect_status_id' => true,
         'created' => true,
         'modified' => true,
         'user' => true,

@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  */
 class ParameterType extends Entity
 {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

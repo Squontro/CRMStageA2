@@ -19,7 +19,8 @@ class WilayasControllerTest extends TestCase
      */
     public $fixtures = [
         'app.Wilayas',
-        'app.Dairas'
+        'app.Countries',
+        'app.Towns'
     ];
 
     /**

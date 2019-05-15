@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\Event\Event ;
+
 /**
  * Users Controller
  *
@@ -13,36 +13,6 @@ use Cake\Event\Event ;
 class UsersController extends AppController
 {
 
-
-    public function beforeFilter(Event $event)
-    {
-        parent::beforeFilter($event);
-        $this->Auth->allow('add');
-    }
-
-    public function login()
-    {
-        $this->layout ='login_temp' ;
-        if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Auth->setUser($user);
-                return $this->redirect($this->Auth->redirectUrl());
-            }
-            $this->Flash->error(__('Invalid email or password, try again'));
-        }
-    }
-    /**
-     * Logout method
-     */
-    public function logout()
-    {
-        $session = $this->request->session();
-        $session->destroy();
-        return $this->redirect($this->Auth->logout());
-    }
-
-
     /**
      * Index method
      *
@@ -50,6 +20,9 @@ class UsersController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Profiles', 'Employees']
+        ];
         $users = $this->paginate($this->Users);
 
         $this->set(compact('users'));
@@ -65,7 +38,7 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => []
+            'contain' => ['Profiles', 'Employees', 'Contacts', 'Opportunities', 'Prospects', 'UserParameters']
         ]);
 
         $this->set('user', $user);
@@ -88,7 +61,9 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user'));
+        $profiles = $this->Users->Profiles->find('list', ['limit' => 200]);
+        $employees = $this->Users->Employees->find('list', ['limit' => 200]);
+        $this->set(compact('user', 'profiles', 'employees'));
     }
 
     /**
@@ -112,7 +87,9 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user'));
+        $profiles = $this->Users->Profiles->find('list', ['limit' => 200]);
+        $employees = $this->Users->Employees->find('list', ['limit' => 200]);
+        $this->set(compact('user', 'profiles', 'employees'));
     }
 
     /**

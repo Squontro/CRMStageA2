@@ -7,7 +7,10 @@ use Cake\ORM\Entity;
  * Wilaya Entity
  *
  * @property int $id
- * @property string|null $name
+ * @property string $name
+ * @property int $country_id
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\Daira[] $dairas
  */
@@ -25,7 +28,9 @@ class Wilaya extends Entity
      */
     protected $_accessible = [
         'name' => true,
-        'code' => true,
+        'country_id' => true,
+        'created' => true,
+        'modified' => true,
         'dairas' => true
     ];
 }

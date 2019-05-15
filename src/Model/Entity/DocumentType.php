@@ -7,9 +7,12 @@ use Cake\ORM\Entity;
  * DocumentType Entity
  *
  * @property int $id
- * @property string|null $name
+ * @property string $name
+ * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\EmpDocument[] $emp_documents
+ * @property \App\Model\Entity\Employee[] $employees
  */
 class DocumentType extends Entity
 {
@@ -25,7 +28,9 @@ class DocumentType extends Entity
      */
     protected $_accessible = [
         'name' => true,
-       
-    
+        'created' => true,
+        'modified' => true,
+        'emp_documents' => true,
+        'employees' => true
     ];
 }
