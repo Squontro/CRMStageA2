@@ -42,6 +42,21 @@ class ObjectivesController extends AppController
     }
 
     /**
+     * Index method Json for JsGrid
+     * @return \Cake\Http\Response
+     */
+    public function  indexJson() {
+        $this->autoRender = false; // avoid to render view
+        $content = $this->Objectives->find('all' ,  array('fields' => array('Objectives.id' ,'Objectives.name')));
+        $this->RequestHandler->respondAs('json');
+        $this->autoRender = false;
+        $content = json_encode($content);
+        $this->response->body($content);
+        $this->response->type('json');
+        return $this->response;
+    }
+    
+    /**
      * Add method
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.

@@ -25,6 +25,22 @@ class DepartmentsController extends AppController
         $this->set(compact('departments'));
     }
 
+
+    /**
+     * Index method Json for JsGrid
+     * @return \Cake\Http\Response
+     */
+    public function  indexJson() {
+        $this->autoRender = false; // avoid to render view
+        $content = $this->Departments->find('all' ,  array('fields' => array('Departments.id' ,'Departments.name')));
+        $this->RequestHandler->respondAs('json');
+        $this->autoRender = false;
+        $content = json_encode($content);
+        $this->response->body($content);
+        $this->response->type('json');
+        return $this->response;
+    }
+
     /**
      * View method
      *
